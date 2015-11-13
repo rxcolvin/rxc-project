@@ -1,4 +1,4 @@
-package com.rxc;
+package com.rx.contact_app;
 
 import com.rxc.contactdata.Contact;
 import com.rxc.contactdata.UserContext;
@@ -7,9 +7,6 @@ import com.rxc.dao.RxDao;
 import com.rxc.lang.UUID;
 import com.rxc.ui.UIModule;
 import com.rxc.ui.*;
-import org.teavm.jso.ajax.XMLHttpRequest;
-import org.teavm.jso.browser.Window;
-import org.teavm.jso.dom.events.Event;
 
 /**
  * Created by richard.colvin on 13/11/2015.
@@ -45,32 +42,30 @@ public class Application {
   }
 
   private void save() {
-     firstName.value();
-     Contact contact = new Contact();
+    firstName.value();
+    Contact contact = new Contact(dao.create(), firstName.value(), lastName.value());
   }
 
-//  private void sendReq(Event e) {
-//    try {
-//       XMLHttpRequest xhr = XMLHttpRequest.create();
-//      xhr.onComplete(() -> receiveResponse(xhr));
-//      //xhr.open("GET", url.getValue());
-//      xhr.setRequestHeader("Accept-Language", "en,en-US;q=0.8");
-//      xhr.setRequestHeader("Accept-Encoding", "gzip, deflate, sdch");
-//      xhr.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36");
-//      xhr.setRequestHeader("Accept", "ext/html,application/xhtml xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-//      xhr.send();
-//    } catch (Exception ex) {
-//      ex.printStackTrace();
-//    }
-//
-//  }
-//
-//  private void receiveResponse(final XMLHttpRequest req) {
-//    Window.alert("" + req.getStatus());
-//    Window.alert(req.getResponseText());
-//  }
-
-
+  //  private void sendReq(Event e) {
+  //    try {
+  //       XMLHttpRequest xhr = XMLHttpRequest.create();
+  //      xhr.onComplete(() -> receiveResponse(xhr));
+  //      //xhr.open("GET", url.getValue());
+  //      xhr.setRequestHeader("Accept-Language", "en,en-US;q=0.8");
+  //      xhr.setRequestHeader("Accept-Encoding", "gzip, deflate, sdch");
+  //      xhr.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36");
+  //      xhr.setRequestHeader("Accept", "ext/html,application/xhtml xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+  //      xhr.send();
+  //    } catch (Exception ex) {
+  //      ex.printStackTrace();
+  //    }
+  //
+  //  }
+  //
+  //  private void receiveResponse(final XMLHttpRequest req) {
+  //    Window.alert("" + req.getStatus());
+  //    Window.alert(req.getResponseText());
+  //  }
 
 
 }
