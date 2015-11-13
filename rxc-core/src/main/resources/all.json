@@ -1,0 +1,730 @@
+[
+  {
+    "startedDateTime": "2015-10-31T17:02:24.387Z",
+    "time": 40.99999999743886,
+    "request": {
+      "method": "GET",
+      "url": "http://281596-lh.akamaihd.net/i/extftahlsch02_0@344793/index_2400_av-b.m3u8?sd=2&rebase=on",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Cookie",
+          "value": "unique_id=1446310850_510240664; _alid_=J+61aswlgU3Z5Lt9S8Ly3w==; hdntl=exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104"
+        },
+        {
+          "name": "DNT",
+          "value": "1"
+        },
+        {
+          "name": "Accept-Encoding",
+          "value": "gzip, deflate, sdch"
+        },
+        {
+          "name": "Host",
+          "value": "281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Accept-Language",
+          "value": "de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"
+        },
+        {
+          "name": "User-Agent",
+          "value": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+        },
+        {
+          "name": "Accept",
+          "value": "*/*"
+        },
+        {
+          "name": "Referer",
+          "value": "http://player.performgroup.com/fta/fta.html"
+        },
+        {
+          "name": "X-Requested-With",
+          "value": "ShockwaveFlash/19.0.0.226"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "queryString": [
+        {
+          "name": "sd",
+          "value": "2"
+        },
+        {
+          "name": "rebase",
+          "value": "on"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "unique_id",
+          "value": "1446310850_510240664",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "hdntl",
+          "value": "exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "headersSize": 651,
+      "bodySize": 0
+    },
+    "response": {
+      "status": 200,
+      "statusText": "OK",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "name": "Date",
+          "value": "Sat, 31 Oct 2015 17:01:57 GMT"
+        },
+        {
+          "name": "Server",
+          "value": "AkamaiGHost"
+        },
+        {
+          "name": "Access-Control-Allow-Methods",
+          "value": "GET, HEAD, OPTIONS"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/vnd.apple.mpegurl"
+        },
+        {
+          "name": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "name": "Set-Cookie",
+          "value": "_alid_=J+61aswlgU3Z5Lt9S8Ly3w==; path=/i/extftahlsch02_0@344793/; domain=281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Access-Control-Expose-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Cache-Control",
+          "value": "max-age=0, no-cache, no-store"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "name": "Content-Length",
+          "value": "449"
+        },
+        {
+          "name": "Access-Control-Allow-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Mime-Version",
+          "value": "1.0"
+        },
+        {
+          "name": "Expires",
+          "value": "Sat, 31 Oct 2015 17:01:57 GMT"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "path": "/i/extftahlsch02_0@344793/",
+          "domain": "281596-lh.akamaihd.net",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "content": {
+        "size": 449,
+        "mimeType": "application/vnd.apple.mpegurl",
+        "compression": 0
+      },
+      "redirectURL": "",
+      "headersSize": 548,
+      "bodySize": 449,
+      "_transferSize": 997
+    },
+    "cache": {},
+    "timings": {
+      "blocked": 1.99999999676947,
+      "dns": -1,
+      "connect": -1,
+      "send": 1.00000000020373,
+      "wait": 38.0000000004657,
+      "receive": -3.552713678800501e-14,
+      "ssl": -1
+    },
+    "connection": "57670"
+  },
+  {
+    "startedDateTime": "2015-10-31T17:02:36.221Z",
+    "time": 967.5000000024738,
+    "request": {
+      "method": "GET",
+      "url": "http://281596-lh.akamaihd.net/i/extftahlsch02_0@344793/segment723155463_2400_av-b.ts?sd=2&rebase=on",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Cookie",
+          "value": "unique_id=1446310850_510240664; _alid_=J+61aswlgU3Z5Lt9S8Ly3w==; hdntl=exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104"
+        },
+        {
+          "name": "DNT",
+          "value": "1"
+        },
+        {
+          "name": "Accept-Encoding",
+          "value": "gzip, deflate, sdch"
+        },
+        {
+          "name": "Host",
+          "value": "281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Accept-Language",
+          "value": "de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"
+        },
+        {
+          "name": "User-Agent",
+          "value": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+        },
+        {
+          "name": "Accept",
+          "value": "*/*"
+        },
+        {
+          "name": "Referer",
+          "value": "http://player.performgroup.com/fta/fta.html"
+        },
+        {
+          "name": "X-Requested-With",
+          "value": "ShockwaveFlash/19.0.0.226"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "queryString": [
+        {
+          "name": "sd",
+          "value": "2"
+        },
+        {
+          "name": "rebase",
+          "value": "on"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "unique_id",
+          "value": "1446310850_510240664",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "hdntl",
+          "value": "exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "headersSize": 660,
+      "bodySize": 0
+    },
+    "response": {
+      "status": 200,
+      "statusText": "OK",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "name": "Date",
+          "value": "Sat, 31 Oct 2015 17:02:08 GMT"
+        },
+        {
+          "name": "Last-Modified",
+          "value": "Sat, 31 Oct 2015 16:46:52 GMT"
+        },
+        {
+          "name": "Server",
+          "value": "AkamaiGHost"
+        },
+        {
+          "name": "Access-Control-Allow-Methods",
+          "value": "GET, HEAD, OPTIONS"
+        },
+        {
+          "name": "Content-Type",
+          "value": "video/MP2T"
+        },
+        {
+          "name": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "name": "Set-Cookie",
+          "value": "_alid_=J+61aswlgU3Z5Lt9S8Ly3w==; path=/i/extftahlsch02_0@344793/; domain=281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Access-Control-Expose-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Cache-Control",
+          "value": "max-age=0, no-cache, no-store"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "name": "Content-Length",
+          "value": "334264"
+        },
+        {
+          "name": "Access-Control-Allow-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Mime-Version",
+          "value": "1.0"
+        },
+        {
+          "name": "Expires",
+          "value": "Sat, 31 Oct 2015 17:02:08 GMT"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "path": "/i/extftahlsch02_0@344793/",
+          "domain": "281596-lh.akamaihd.net",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "content": {
+        "size": 334264,
+        "mimeType": "video/mp2t",
+        "compression": 0
+      },
+      "redirectURL": "",
+      "headersSize": 578,
+      "bodySize": 334264,
+      "_transferSize": 334842
+    },
+    "cache": {},
+    "timings": {
+      "blocked": 2.00000000040745,
+      "dns": -1,
+      "connect": -1,
+      "send": 0,
+      "wait": 965.0000000001455,
+      "receive": 0.5000000019208528,
+      "ssl": -1
+    },
+    "connection": "57748"
+  },
+  {
+    "startedDateTime": "2015-10-31T17:02:38.119Z",
+    "time": 38.99999999703141,
+    "request": {
+      "method": "GET",
+      "url": "http://281596-lh.akamaihd.net/i/extftahlsch02_0@344793/index_2400_av-b.m3u8?sd=2&rebase=on",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Cookie",
+          "value": "unique_id=1446310850_510240664; _alid_=J+61aswlgU3Z5Lt9S8Ly3w==; hdntl=exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104"
+        },
+        {
+          "name": "DNT",
+          "value": "1"
+        },
+        {
+          "name": "Accept-Encoding",
+          "value": "gzip, deflate, sdch"
+        },
+        {
+          "name": "Host",
+          "value": "281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Accept-Language",
+          "value": "de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"
+        },
+        {
+          "name": "User-Agent",
+          "value": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+        },
+        {
+          "name": "Accept",
+          "value": "*/*"
+        },
+        {
+          "name": "Referer",
+          "value": "http://player.performgroup.com/fta/fta.html"
+        },
+        {
+          "name": "X-Requested-With",
+          "value": "ShockwaveFlash/19.0.0.226"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "queryString": [
+        {
+          "name": "sd",
+          "value": "2"
+        },
+        {
+          "name": "rebase",
+          "value": "on"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "unique_id",
+          "value": "1446310850_510240664",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "hdntl",
+          "value": "exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "headersSize": 651,
+      "bodySize": 0
+    },
+    "response": {
+      "status": 404,
+      "statusText": "Not Found",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "name": "Date",
+          "value": "Sat, 31 Oct 2015 17:02:10 GMT"
+        },
+        {
+          "name": "Server",
+          "value": "AkamaiGHost"
+        },
+        {
+          "name": "Access-Control-Allow-Methods",
+          "value": "GET, HEAD, OPTIONS"
+        },
+        {
+          "name": "Content-Type",
+          "value": "text/html"
+        },
+        {
+          "name": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "name": "Set-Cookie",
+          "value": "_alid_=J+61aswlgU3Z5Lt9S8Ly3w==; path=/i/extftahlsch02_0@344793/; domain=281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Access-Control-Expose-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Cache-Control",
+          "value": "max-age=0, no-cache, no-store"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "name": "Content-Length",
+          "value": "176"
+        },
+        {
+          "name": "Access-Control-Allow-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Mime-Version",
+          "value": "1.0"
+        },
+        {
+          "name": "Expires",
+          "value": "Sat, 31 Oct 2015 17:02:10 GMT"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "path": "/i/extftahlsch02_0@344793/",
+          "domain": "281596-lh.akamaihd.net",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "content": {
+        "size": 176,
+        "mimeType": "text/html",
+        "compression": 0,
+        "text": "<HTML><HEAD><TITLE>Error</TITLE></HEAD><BODY>\nAn error occurred while processing your request.<p>\nReference&#32;&#35;183&#46;6ef81402&#46;1446310930&#46;3efb340\n</BODY></HTML>\n"
+      },
+      "redirectURL": "",
+      "headersSize": 535,
+      "bodySize": 176,
+      "_transferSize": 711
+    },
+    "cache": {},
+    "timings": {
+      "blocked": 1.00000000020373,
+      "dns": -1,
+      "connect": -1,
+      "send": 1.0000000002037202,
+      "wait": 35.99999999642024,
+      "receive": 1.0000000002037126,
+      "ssl": -1
+    },
+    "connection": "57748"
+  },
+  {
+    "startedDateTime": "2015-10-31T17:02:39.188Z",
+    "time": 45.9999999984575,
+    "request": {
+      "method": "GET",
+      "url": "http://281596-lh.akamaihd.net/i/extftahlsch02_0@344793/index_2400_av-b.m3u8?sd=2&rebase=on",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Cookie",
+          "value": "unique_id=1446310850_510240664; _alid_=J+61aswlgU3Z5Lt9S8Ly3w==; hdntl=exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104"
+        },
+        {
+          "name": "DNT",
+          "value": "1"
+        },
+        {
+          "name": "Accept-Encoding",
+          "value": "gzip, deflate, sdch"
+        },
+        {
+          "name": "Host",
+          "value": "281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Accept-Language",
+          "value": "de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"
+        },
+        {
+          "name": "User-Agent",
+          "value": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+        },
+        {
+          "name": "Accept",
+          "value": "*/*"
+        },
+        {
+          "name": "Referer",
+          "value": "http://player.performgroup.com/fta/fta.html"
+        },
+        {
+          "name": "X-Requested-With",
+          "value": "ShockwaveFlash/19.0.0.226"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "queryString": [
+        {
+          "name": "sd",
+          "value": "2"
+        },
+        {
+          "name": "rebase",
+          "value": "on"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "unique_id",
+          "value": "1446310850_510240664",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        },
+        {
+          "name": "hdntl",
+          "value": "exp=1446397250~acl=%2f*~data=hdntl~hmac=e3989eccb9e9af5e991d99adddc6de0e3b1e329ed3412d160ebea8cf27c3a104",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "headersSize": 651,
+      "bodySize": 0
+    },
+    "response": {
+      "status": 404,
+      "statusText": "Not Found",
+      "httpVersion": "HTTP/1.1",
+      "headers": [
+        {
+          "name": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "name": "Date",
+          "value": "Sat, 31 Oct 2015 17:02:11 GMT"
+        },
+        {
+          "name": "Server",
+          "value": "AkamaiGHost"
+        },
+        {
+          "name": "Access-Control-Allow-Methods",
+          "value": "GET, HEAD, OPTIONS"
+        },
+        {
+          "name": "Content-Type",
+          "value": "text/html"
+        },
+        {
+          "name": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "name": "Set-Cookie",
+          "value": "_alid_=J+61aswlgU3Z5Lt9S8Ly3w==; path=/i/extftahlsch02_0@344793/; domain=281596-lh.akamaihd.net"
+        },
+        {
+          "name": "Access-Control-Expose-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Cache-Control",
+          "value": "max-age=0, no-cache, no-store"
+        },
+        {
+          "name": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "name": "Content-Length",
+          "value": "176"
+        },
+        {
+          "name": "Access-Control-Allow-Headers",
+          "value": "*"
+        },
+        {
+          "name": "Mime-Version",
+          "value": "1.0"
+        },
+        {
+          "name": "Expires",
+          "value": "Sat, 31 Oct 2015 17:02:11 GMT"
+        }
+      ],
+      "cookies": [
+        {
+          "name": "_alid_",
+          "value": "J+61aswlgU3Z5Lt9S8Ly3w==",
+          "path": "/i/extftahlsch02_0@344793/",
+          "domain": "281596-lh.akamaihd.net",
+          "expires": null,
+          "httpOnly": false,
+          "secure": false
+        }
+      ],
+      "content": {
+        "size": 176,
+        "mimeType": "text/html",
+        "compression": 0,
+        "text": "<HTML><HEAD><TITLE>Error</TITLE></HEAD><BODY>\nAn error occurred while processing your request.<p>\nReference&#32;&#35;183&#46;6ef81402&#46;1446310931&#46;3efb3c1\n</BODY></HTML>\n"
+      },
+      "redirectURL": "",
+      "headersSize": 535,
+      "bodySize": 176,
+      "_transferSize": 711
+    },
+    "cache": {},
+    "timings": {
+      "blocked": 2.00000000040745,
+      "dns": -1,
+      "connect": -1,
+      "send": 0,
+      "wait": 43.99999999805004,
+      "receive": 0,
+      "ssl": -1
+    },
+    "connection": "57748"
+  }
+]
+}
+]
