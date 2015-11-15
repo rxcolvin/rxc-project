@@ -10,7 +10,8 @@
 		<module>rxc-contact-app</module>
 		<module>rxc-contact-data</module>
 		<module>rxc-core</module>
-        <module>rxc-dao</module>
+		<module>rxc-dao</module>
+		<module>rxc-meta-data</module>
 		<module>rxc-ui</module>
 		<module>rxc-lang</module>
 		<module>rxc-tvm</module>
