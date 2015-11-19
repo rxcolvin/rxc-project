@@ -17,17 +17,20 @@ public class DaoCache<K, T, C> implements RxDao<K, T, C> {
   private final ConcurrentHashMap<K, T2<T, Long>> cache = new ConcurrentHashMap<>();
 
   private final Duration cachePeriod;
-  private final RxDao inner;
+  private final RxDao<K, T, C> inner;
 
   private final Timing timing;
   private final F1<K, C> keyFactory;
 
   private final Map<Class<? extends QueryData<T>>, QueryHandler<K, T>> queryHandlers;
 
-  public DaoCache(final Duration cachePeriod,
-      final RxDao inner,
-      final Timing timing, F1<K, C> keyFactory,
-      final Array<QueryHandler<K, T>> queryHandlers) {
+  public DaoCache(
+      final Duration cachePeriod,
+      final RxDao<K, T, C> inner,
+      final F1<K, C> keyFactory,
+      final Array<QueryHandler<K, T>> queryHandlers,
+      final Timing timing
+  ) {
     this.cachePeriod = cachePeriod;
     this.inner = inner;
     this.timing = timing;
@@ -95,5 +98,22 @@ public class DaoCache<K, T, C> implements RxDao<K, T, C> {
     Class<? extends QueryData<T>> queryType();
 
     Observable<Collection<T2<K, T>>> query(QueryData<T> queryData);
+  }
+
+  public static class Factory<K, T, C> {
+      private final Timing timing;
+
+    public Factory(final Timing timing) {
+      this.timing = timing;
+    }
+
+    DaoCache<K, T, C> create(
+        final Duration cachePeriod,
+        final RxDao<K, T, C> inner,
+        final F1<K, C> keyFactory,
+        final Array<QueryHandler<K, T>> queryHandlers
+    ) {
+      return new DaoCache<>(cachePeriod, inner, keyFactory, queryHandlers, timing);
+    }
   }
 }

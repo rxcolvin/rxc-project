@@ -5,9 +5,6 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-/**
- * Created by richard on 15/11/2015.
- */
 public class Array<T> implements Iterable<T> {
     private final T[] ts;
 
@@ -27,16 +24,21 @@ public class Array<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new MyIterator();
     }
 
-    @Override
-    public void forEach(Consumer<? super T> action) {
+    private class MyIterator implements Iterator<T> {
 
-    }
+      int ref = 0;
 
-    @Override
-    public Spliterator<T> spliterator() {
-        return null;
+      @Override
+      public boolean hasNext() {
+        return ref < ts.length;
+      }
+
+      @Override
+      public T next() {
+        return ts[ref++];
+      }
     }
 }

@@ -1,4 +1,4 @@
-package com.rxc;
+package com.rxc.contact_app;
 
 import com.rxc.contactdata.Contact;
 import com.rxc.contactdata.UserContext;
@@ -44,7 +44,7 @@ public class Application {
 
   private void save() {
      firstName.value();
-     Contact contact = new Contact();
+     Contact contact = new Contact(null, null, null);
   }
 
 //  private void sendReq(Event e) {

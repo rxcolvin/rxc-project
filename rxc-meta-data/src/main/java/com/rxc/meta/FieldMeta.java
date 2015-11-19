@@ -1,11 +1,15 @@
 package com.rxc.meta;
 
-/**
- * Created by richard on 15/11/2015.
- */
-public interface FieldMeta<T> {
-    Class<T> tType();
-    String name();
+public class FieldMeta<T> {
+    public final Class<T> tType;
+    public final String name;
 
-    FieldValidator<T> validator();
+    public final FieldValidator<T> validator;
+
+
+  public FieldMeta(final Class<T> tType, final String name, final FieldValidator<T> validator) {
+    this.tType = tType;
+    this.name = name;
+    this.validator = validator;
+  }
 }

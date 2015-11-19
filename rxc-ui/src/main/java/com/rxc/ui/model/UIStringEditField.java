@@ -1,5 +1,6 @@
 package com.rxc.ui.model;
 
+import com.rxc.lang.F1;
 import com.rxc.lang.T3;
 
 /**
@@ -24,10 +25,6 @@ public interface UIStringEditField extends UIComponent {
   void value(String value);
   void readonly(boolean flag);
   boolean readonly();
-  void listener(Listener t);
-
-  interface Listener {
-    T3<String, Status, String> proposeChange(String value);
-  }
+  void listener(F1<T3<String, Status, String>, String> t);
 }
 

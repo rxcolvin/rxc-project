@@ -22,20 +22,15 @@ public class StringFieldController {
 
     public void start() {
         ui.value(getter.apply());
-        ui.listener(new UIStringEditField.Listener() {
-            @Override
-            public T3<String, UIStringEditField.Status, String> proposeChange(String value) {
-                return null;
-            }
-        });
+        ui.listener(this::validate);
     }
 
-    public T3<String, UIStringEditField.Status, String> validate(String value) {
-        T2<ValidState, String> v = fieldMeta.validator().validate(value);
+    private T3<String, UIStringEditField.Status, String> validate(String value) {
+        T2<ValidState, String> v = fieldMeta.validator.validate(value);
         if (v._1 != ValidState.ERROR) {
             setter.apply(value);
         }
-        return Tuple.$(v._1, makeStatus(v._1), v._2);
+        return Tuple.$(value, makeStatus(v._1), v._2);
     }
 
     private UIStringEditField.Status makeStatus(ValidState validState) {
