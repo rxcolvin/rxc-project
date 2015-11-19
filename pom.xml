@@ -5,17 +5,19 @@
     <artifactId>rxc-project</artifactId>
     <packaging>pom</packaging>
    <name>rxc-project</name>
-   <version>1.0-SNAPSHOT</version>
+   <version>1.0.0-SNAPSHOT</version>
 	<modules>
 		<module>rxc-contact-app</module>
 		<module>rxc-contact-data</module>
 		<module>rxc-core</module>
-		<module>rxc-dao</module>
+        <module>rxc-dao</module>
+        <module>rxc-dao-es</module>
+        <module>rxc-dao-cache</module>
 		<module>rxc-meta-data</module>
 		<module>rxc-ui</module>
 		<module>rxc-lang</module>
 		<module>rxc-tvm</module>
 		<module>rxc-tvm-contact-client</module>
 	</modules>
- 
+
 </project>
