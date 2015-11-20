@@ -3,7 +3,6 @@ package com.rxc.ui.controller;
 import com.rxc.lang.*;
 import com.rxc.meta.FieldMeta;
 import com.rxc.meta.ValidState;
-import com.rxc.ui.model.UIStringEditField;
 
 public class StringFieldController {
 

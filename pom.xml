@@ -15,6 +15,7 @@
         <module>rxc-dao-cache</module>
 		<module>rxc-meta-data</module>
 		<module>rxc-ui</module>
+        <module>rxc-controller</module>
 		<module>rxc-lang</module>
 		<module>rxc-tvm</module>
 		<module>rxc-tvm-contact-client</module>

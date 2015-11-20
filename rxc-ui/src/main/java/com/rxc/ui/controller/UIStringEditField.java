@@ -1,4 +1,4 @@
-package com.rxc.ui.model;
+package com.rxc.ui.controller;
 
 import com.rxc.lang.F1;
 import com.rxc.lang.T3;

@@ -1,4 +1,4 @@
-package com.rxc.ui.model;
+package com.rxc.ui.controller;
 
 /**
  * Created by richard.colvin on 13/11/2015.

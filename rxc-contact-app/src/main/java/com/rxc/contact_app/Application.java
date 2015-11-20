@@ -2,29 +2,26 @@ package com.rxc.contact_app;
 
 import com.rxc.contactdata.Contact;
 import com.rxc.contactdata.UserContext;
-import com.rxc.dao.DaoModule;
 import com.rxc.dao.RxDao;
 import com.rxc.lang.UUID;
-import com.rxc.ui.model.UIAction;
-import com.rxc.ui.model.UIModule;
-import com.rxc.ui.model.UIStringEditField;
+import com.rxc.ui.controller.UIAction;
+import com.rxc.ui.controller.UIContainer;
+import com.rxc.ui.controller.UIStringEditField;
 
 /**
  * Created by richard.colvin on 13/11/2015.
  */
 public class Application {
 
-  private final UIModule uiModule;
-  private final DaoModule daoModule;
-  private RxDao<Contact, UUID, UserContext> dao;
+  private final RxDao<Contact, UUID, UserContext> dao;
+
   private UIStringEditField firstName;
   private UIStringEditField lastName;
   private UIAction saveUiAction;
 
-  public Application(UIModule uiModule, DaoModule daoModule) {
+  public Application(final RxDao<Contact, UUID, UserContext> dao, UIContainer rootContainer) {
 
-    this.uiModule = uiModule;
-    this.daoModule = daoModule;
+    this.dao = dao;
   }
 
   public void start() {
