@@ -8,10 +8,8 @@ import com.rxc.lang.*;
 import com.rxc.meta.*;
 import com.rxc.ui.UIAction;
 import com.rxc.ui.UIContainer;
-import com.rxc.ui.UIStringEditField;
 
 import static com.rxc.lang.Array.*;
-import static com.rxc.lang.Map.*;
 
 /**
  * Created by richard.colvin on 13/11/2015.
@@ -38,9 +36,9 @@ public class Application {
         );
     this.dao = dao;
 
-    contactEntityController = new EntityController<>(contactMeta, rootContainer.component("Contact"), null);
+    contactEntityController = new EntityController<>(contactMeta, rootContainer.container("Contact"), null);
 
-    UIAction saveAction = rootContainer.component("Save");
+    UIAction saveAction = rootContainer.action("Save");
     saveAction.listener(this::saveContract);
   }
 

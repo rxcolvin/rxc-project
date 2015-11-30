@@ -3,6 +3,7 @@ package com.rxc.meta;
 import com.rxc.lang.Builder;
 import com.rxc.lang.F1;
 import com.rxc.lang.F2V;
+import com.rxc.lang.T2;
 
 
 public final class FieldMetaImpl<T, X, B extends Builder<X>> implements FieldMeta<T, X, B> {
@@ -28,7 +29,7 @@ public final class FieldMetaImpl<T, X, B extends Builder<X>> implements FieldMet
   }
 
   @Override
-  public FieldValidator<T> validator() {
+  public F1<T2<ValidState, String>, T>  validator() {
     return fieldDef.validator;
   }
 

@@ -2,11 +2,12 @@ package com.rxc.contoller;
 
 import com.rxc.lang.*;
 import com.rxc.meta.ValidState;
+import com.rxc.ui.UIComponent;
 import com.rxc.ui.UIEditField;
 
 import static com.rxc.lang.Tuple.*;
 
-public class StringFieldController<T> implements FieldController<T, String, UIEditField> {
+public class StringFieldController<T> implements FieldController<T> {
 
   private final UIEditField                   ui;
   private final F1<T2<ValidState, String>, T> validator;
@@ -27,12 +28,7 @@ public class StringFieldController<T> implements FieldController<T, String, UIEd
     ui.listener(this::validate);
   }
 
-  @Override
-  public Class<String> vType() {
-    return String.class;
-  }
-
-  @Override public Class<T> tType() {
+   @Override public Class<T> tType() {
     return tType;
   }
 
@@ -60,5 +56,21 @@ public class StringFieldController<T> implements FieldController<T, String, UIEd
   }
 
 
+  public static class Factory<T> implements FieldController.Factory<T> {
 
+    private final F1<T,String> fromString;
+    private final F1<String, T> toString;
+    private final Class<T> tType;
+
+    public Factory(final F1<T, String> fromString, final F1<String, T> toString, final Class<T> tType) {
+      this.fromString = fromString;
+      this.toString = toString;
+      this.tType = tType;
+    }
+
+    @Override
+    public FieldController<T> create(final UIEditField ui, final F1<T2<ValidState, String>, T> validator) {
+      return new StringFieldController<T>(ui, validator, fromString, toString, tType);
+    }
+  }
 }

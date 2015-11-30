@@ -1,6 +1,7 @@
 package com.rxc.ui;
 
 public interface UIContainer {
-  <X, T extends UIComponent<X>> T component(String name);
-
+  UIEditField editField(String name);
+  UIContainer container(String name);
+  UIAction action(String name);
 }
