@@ -2,13 +2,11 @@ package com.rxc.lang;
 
 
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 public class Array<T> implements Iterable<T> {
     private final T[] ts;
 
-    public Array(T... ts) {
+  private Array(T... ts) {
         this.ts = ts;
     }
 
@@ -40,5 +38,9 @@ public class Array<T> implements Iterable<T> {
       public T next() {
         return ts[ref++];
       }
+    }
+
+  public static <T> Array<T> $$(T... ts) {
+    return new Array<T>(ts);
     }
 }

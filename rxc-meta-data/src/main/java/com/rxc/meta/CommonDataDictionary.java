@@ -4,10 +4,11 @@ import com.rxc.lang.T2;
 
 import static com.rxc.lang.Tuple.*;
 
-//TODO: move to separate page
+//TODO: move to separate package
 public class CommonDataDictionary {
 
-  public FieldMeta<String> firstName = new FieldMeta<>(String.class, "firstName", this::validName);
+  public final FieldDef<String> firstName = new FieldDef<>(String.class, "firstName", this::validName);
+  public final FieldDef<String> lastName  = new FieldDef<>(String.class, "lastName", this::validName);
 
 
   private T2<ValidState, String> validName(final String s) {

@@ -1,15 +1,17 @@
 package com.rxc.meta;
 
-public class FieldMeta<T> {
-    public final Class<T> tType;
-    public final String name;
+import com.rxc.lang.Builder;
+import com.rxc.lang.F1;
+import com.rxc.lang.F2V;
 
-    public final FieldValidator<T> validator;
+public interface FieldMeta<T, X, B extends Builder<X>> {
+  Class<T> tType();
 
+  String name();
 
-  public FieldMeta(final Class<T> tType, final String name, final FieldValidator<T> validator) {
-    this.tType = tType;
-    this.name = name;
-    this.validator = validator;
-  }
+  FieldValidator<T> validator();
+
+  F1<T, X> getter();
+
+  F2V<T, B> setter();
 }

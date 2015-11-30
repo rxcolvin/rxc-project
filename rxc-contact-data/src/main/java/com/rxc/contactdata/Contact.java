@@ -17,5 +17,16 @@ public class Contact {
     this.firstName = firstName;
     this.lastName = lastName;
   }
+
+  public static class Builder implements com.rxc.lang.Builder<Contact> {
+    public String firstName;
+    public String lastName;
+
+
+    @Override
+    public Contact build() {
+      return new Contact(null, firstName, lastName);
+    }
+  }
 }
 
