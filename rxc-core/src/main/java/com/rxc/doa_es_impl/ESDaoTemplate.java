@@ -56,10 +56,6 @@ public class ESDaoTemplate<K, T, C> implements Dao<K, T, C> {
 
   }
 
-  @Override
-  public void remove(final QueryData<T> queryData, final C context) {
-
-  }
 
   @Override
   public T getById(final K id) {

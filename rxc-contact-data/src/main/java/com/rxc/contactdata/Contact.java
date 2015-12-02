@@ -1,7 +1,7 @@
 package com.rxc.contactdata;
 
 
-import com.rxc.lang.UUID;
+import java.util.UUID;
 
 /**
  * Created by richard.colvin on 13/11/2015.

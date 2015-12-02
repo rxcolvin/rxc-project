@@ -10,6 +10,7 @@ import rx.Observable;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.rxc.lang.Map.*;
 import static com.rxc.lang.Tuple.*;
 
 public class DaoCache<K, T, C> implements RxDao<K, T, C> {
@@ -35,12 +36,12 @@ public class DaoCache<K, T, C> implements RxDao<K, T, C> {
     this.inner = inner;
     this.timing = timing;
     this.keyFactory = keyFactory;
-    this.queryHandlers = new Map<>(queryHandlers, QueryHandler::queryType);
+    this.queryHandlers = $_(queryHandlers, QueryHandler::queryType);
   }
 
   @Override
   public Observable<K> createKey(final C context) {
-    return Observable.just(keyFactory.apply(context));
+    return Observable.just(keyFactory.$(context));
   }
 
   @Override

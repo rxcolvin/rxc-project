@@ -5,6 +5,4 @@ package com.rxc.dao;
  */
 public interface DaoModule {
 
-    <T, K, C> RxDao<T, K, C> rxDoa(Class<T> tClass, Class<K> kClass, Class<C> cClass);
-
 }

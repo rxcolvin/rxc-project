@@ -17,13 +17,13 @@ public class Map<K, T> {
   private Map(Array<T> elements, F1<K, T> f, F1<T, K> whenNotFound) {
     this.whenNotFound = whenNotFound;
     map = new HashMap<>(elements.size());
-    elements.forEach((t) -> map.put(f.apply(t), t));
+    elements.forEach((t) -> map.put(f.$(t), t));
   }
 
   private <X> Map(Array<X> elements, F1<K, X> f1, F1<T, X> f2, F1<T, K> whenNotFound) {
     this.whenNotFound = whenNotFound;
     map = new HashMap<>(elements.size());
-    elements.forEach((t) -> map.put(f1.apply(t), f2.apply(t)));
+    elements.forEach((t) -> map.put(f1.$(t), f2.$(t)));
   }
 
 
@@ -32,7 +32,7 @@ public class Map<K, T> {
 
     T ret = map.get(k);
     if (ret == null) {
-      ret = whenNotFound.apply(k);
+      ret = whenNotFound.$(k);
     }
     return ret;
   }
