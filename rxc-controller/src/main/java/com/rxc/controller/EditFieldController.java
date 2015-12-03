@@ -6,7 +6,7 @@ import com.rxc.ui.UIEditField;
 
 import static com.rxc.lang.Tuple.*;
 
-public class StringFieldController<T> implements FieldController<T> {
+public class EditFieldController<T>  {
 
   private final UIEditField                   ui;
   private final F1<T2<ValidState, String>, T> validator;
@@ -14,10 +14,10 @@ public class StringFieldController<T> implements FieldController<T> {
   private final F1<String, T>                 toString;
   private final Class<T>                      tType;
 
-  public StringFieldController(UIEditField ui, F1<T2<ValidState, String>, T> validator,
-                               F1<T, String> fromString,
-                               F1<String, T> toString,
-                               Class<T> tType) {
+  public EditFieldController(UIEditField ui, F1<T2<ValidState, String>, T> validator,
+      F1<T, String> fromString,
+      F1<String, T> toString,
+      Class<T> tType) {
     this.ui = ui;
     this.validator = validator;
     this.fromString = fromString;
@@ -27,7 +27,7 @@ public class StringFieldController<T> implements FieldController<T> {
     ui.listener(this::validate);
   }
 
-   @Override public Class<T> tType() {
+   public Class<T> tType() {
     return tType;
   }
 
@@ -55,11 +55,11 @@ public class StringFieldController<T> implements FieldController<T> {
   }
 
 
-  public static class Factory<T> implements FieldController.Factory<T> {
+  public static class Factory<T>  {
 
     private final F1<T,String> fromString;
     private final F1<String, T> toString;
-    private final Class<T> tType;
+    public final Class<T> tType;
 
     public Factory(final F1<T, String> fromString, final F1<String, T> toString, final Class<T> tType) {
       this.fromString = fromString;
@@ -67,9 +67,8 @@ public class StringFieldController<T> implements FieldController<T> {
       this.tType = tType;
     }
 
-    @Override
-    public FieldController<T> create(final UIEditField ui, final F1<T2<ValidState, String>, T> validator) {
-      return new StringFieldController<T>(ui, validator, fromString, toString, tType);
+    public EditFieldController<T> create(final UIEditField ui, final F1<T2<ValidState, String>, T> validator) {
+      return new EditFieldController<T>(ui, validator, fromString, toString, tType);
     }
   }
 }

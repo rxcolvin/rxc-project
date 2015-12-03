@@ -7,6 +7,8 @@ import java.util.UUID;
  * Created by richard.colvin on 13/11/2015.
  */
 public class Contact {
+  public final static String $myName = "Contact";
+
   public final UUID id;
   public final String firstName;
   public final String lastName;

@@ -1,9 +1,9 @@
 package com.rxc.controller;
 
 
-import com.rxc.lang.Array;
+import com.rxc.lang.$$;
 import com.rxc.lang.Builder;
-import com.rxc.lang.Map;
+import com.rxc.lang.$_;
 import com.rxc.meta.EntityMeta;
 import com.rxc.meta.FieldMeta;
 import com.rxc.ui.UIContainer;
@@ -18,31 +18,31 @@ import java.util.List;
 public class EntityController<E, B extends Builder<E>> {
 
   private final EntityMeta<E, B> entityMeta;
-  private final Array<? extends FieldController<?>> fieldControllers;
+  private final $$<EditFieldController<?>> fieldControllers;
 
   private E model;
 
   public EntityController(final EntityMeta<E, B> entityMeta,
       final UIContainer container,
-      final Map<Class<?>, FieldController.Factory<?>> fieldControllerFactoryMap
+      final $_<Class<?>, EditFieldController.Factory<?>> fieldControllerFactoryMap
   ) {
     this.entityMeta = entityMeta;
     this.fieldControllers = buildFieldControllers(entityMeta, container, fieldControllerFactoryMap);
   }
 
-  private Array<? extends FieldController<?>> buildFieldControllers(
+  private $$<EditFieldController<?>> buildFieldControllers(
       final EntityMeta<E, B> entityMeta,
       final UIContainer container,
-      final Map<Class<?>, FieldController.Factory<?>> fieldControllerFactoryMap
+      final $_<Class<?>, EditFieldController.Factory<?>> fieldControllerFactoryMap
   ) {
-    final List<FieldController<?>> list = new ArrayList<>();
+    final List<EditFieldController<?>> list = new ArrayList<>();
     for (FieldMeta fieldMeta : entityMeta.fieldMetas()) {
       UIEditField ui = container.editField(fieldMeta.name());
       // ui.constraint(..)
-      FieldController<?> fc = fieldControllerFactoryMap.$(fieldMeta.tType()).create(ui, fieldMeta.validator());
+      EditFieldController<?> fc = fieldControllerFactoryMap.$(fieldMeta.tType()).create(ui, fieldMeta.validator());
       list.add(fc);
     }
-    return Array.$$(list.toArray(new FieldController<?>[entityMeta.fieldMetas().size()]));
+    return $$.$$(list.toArray(new EditFieldController<?>[entityMeta.fieldMetas().size()]));
   }
 
   public final void model(E model) {
@@ -53,8 +53,8 @@ public class EntityController<E, B extends Builder<E>> {
   public final E model() {
     Builder<E> b = entityMeta.builderFactory.apply();
     for (int i = 0; i < entityMeta.fieldMetas().size(); i++) {
-      FieldMeta fm = entityMeta.fieldMetas().at(i);
-      FieldController fc = fieldControllers.at(i);
+      FieldMeta fm = entityMeta.fieldMetas().$(i);
+      EditFieldController fc = fieldControllers.$(i);
       Object value = fc.value();
       fm.setter().apply(value, b);
     }
@@ -65,8 +65,8 @@ public class EntityController<E, B extends Builder<E>> {
   private void reset() {
     if (model != null) {
       for (int i = 0; i < entityMeta.fieldMetas().size(); i++) {
-        FieldMeta fm = entityMeta.fieldMetas().at(i);
-        FieldController fc = fieldControllers.at(i);
+        FieldMeta fm = entityMeta.fieldMetas().$(i);
+        EditFieldController fc = fieldControllers.$(i);
         fc.value(fm.getter().$(model));
       }
     }
@@ -75,19 +75,17 @@ public class EntityController<E, B extends Builder<E>> {
 
   /**
    *
-   * @param <X>
-   * @param <B>
    */
-  public static class Factory<X, B extends Builder<X>> {
+  public static class Factory {
 
 
-    private final Map<Class<?>, FieldController.Factory<?>> fieldControllerFactoryMap;
+    private final $_<Class<?>, EditFieldController.Factory<?>> fieldControllerFactoryMap;
 
-    public Factory(final Map<Class<?>, FieldController.Factory<?>> fieldControllerFactoryMap) {
+    public Factory(final $_<Class<?>, EditFieldController.Factory<?>> fieldControllerFactoryMap) {
       this.fieldControllerFactoryMap = fieldControllerFactoryMap;
     }
 
-    public EntityController<X, B> create(final EntityMeta<X, B> entityMeta,
+    public <X, B extends Builder<X>> EntityController<X, B> create(final EntityMeta<X, B> entityMeta,
         final UIContainer uiContainer) {
       return new EntityController<X, B>(entityMeta, uiContainer, fieldControllerFactoryMap);
     }

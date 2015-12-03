@@ -63,4 +63,8 @@ public class MockUIEditField implements UIEditField {
       msg = t3._3;
     }
   }
+
+  public static MockUIEditField $(String name) {
+    return new MockUIEditField(name);
+  }
 }

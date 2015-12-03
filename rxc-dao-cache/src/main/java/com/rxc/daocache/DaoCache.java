@@ -10,7 +10,7 @@ import rx.Observable;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.rxc.lang.Map.*;
+import static com.rxc.lang.$_.*;
 import static com.rxc.lang.Tuple.*;
 
 public class DaoCache<K, T, C> implements RxDao<K, T, C> {
@@ -23,13 +23,13 @@ public class DaoCache<K, T, C> implements RxDao<K, T, C> {
   private final Timing timing;
   private final F1<K, C> keyFactory;
 
-  private final Map<Class<? extends QueryData<T>>, QueryHandler<K, T>> queryHandlers;
+  private final $_<Class<? extends QueryData<T>>, QueryHandler<K, T>> queryHandlers;
 
   public DaoCache(
       final Duration cachePeriod,
       final RxDao<K, T, C> inner,
       final F1<K, C> keyFactory,
-      final Array<QueryHandler<K, T>> queryHandlers,
+      final $$<QueryHandler<K, T>> queryHandlers,
       final Timing timing
   ) {
     this.cachePeriod = cachePeriod;
@@ -112,7 +112,7 @@ public class DaoCache<K, T, C> implements RxDao<K, T, C> {
         final Duration cachePeriod,
         final RxDao<K, T, C> inner,
         final F1<K, C> keyFactory,
-        final Array<QueryHandler<K, T>> queryHandlers
+        final $$<QueryHandler<K, T>> queryHandlers
     ) {
       return new DaoCache<>(cachePeriod, inner, keyFactory, queryHandlers, timing);
     }

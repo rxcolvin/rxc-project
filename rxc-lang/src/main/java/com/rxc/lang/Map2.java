@@ -1,16 +1,14 @@
 package com.rxc.lang;
 
-import java.util.List;
-
 /**
  * Immutable Map Of Maps : shit implementation
  * TODO: Proper implementation.
  */
 public class Map2<K1, K2, V> {
 
-  private final Array<T3<K1, K1, V>> ts;
+  private final $$<T3<K1, K1, V>> ts;
 
-  private Map2(Array<T3<K1, K1, V>> ts) {
+  private Map2($$<T3<K1, K1, V>> ts) {
     this.ts = ts;
   }
 
@@ -23,7 +21,7 @@ public class Map2<K1, K2, V> {
     return null;
   }
 
-  public static <K1, K2, V> Map2<K1, K2, V> $__(Array<T3<K1, K1, V>> ts) {
+  public static <K1, K2, V> Map2<K1, K2, V> $__($$<T3<K1, K1, V>> ts) {
     return new Map2<K1, K2, V>(ts);
   }
 

@@ -2,7 +2,6 @@ package com.rxc.uimock;
 
 import com.rxc.lang.F0V;
 import com.rxc.ui.UIAction;
-import com.rxc.ui.UIComponent;
 
 /**
  * Created by richard.colvin on 02/12/2015.

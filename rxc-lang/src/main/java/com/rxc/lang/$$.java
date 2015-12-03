@@ -6,15 +6,15 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class Array<T> implements Iterable<T> {
+public class $$<T> implements Iterable<T> {
   private final List<T> ts;
 
   @SafeVarargs
-  private Array(T... ts) {
+  private $$(T... ts) {
     this.ts = Arrays.asList(ts);
   }
 
-  private Array(List<T> ts) {
+  private $$(List<T> ts) {
     this.ts = ts;
   }
 
@@ -23,16 +23,16 @@ public class Array<T> implements Iterable<T> {
     return ts.size();
   }
 
-  public T at(int index) {
+  public T $(int index) {
     return ts.get(index);
   }
 
-  public <X> Array<X> map(F1<X, T> f) {
+  public <X> $$<X> map(F1<X, T> f) {
     List<X> xs = new ArrayList<>(ts.size());
     for (T t : ts) {
       xs.add(f.$(t));
     }
-    return new Array<>(xs);
+    return new $$<>(xs);
   }
 
 
@@ -58,15 +58,17 @@ public class Array<T> implements Iterable<T> {
 
   /**
    *
-   * @param f
-   * @param classX have to clue up the compile because the inference is shit
-   * @param <X>
    * @return
    */
 
-  public static <T> Array<T> $$(T... ts) {
-    return new Array<T>(ts);
+  public static <T> $$<T> $$(T... ts) {
+    return new $$<T>(ts);
   }
 
+  private  final static $$<?> $0 = new $$<>();
+
+  public static <X> $$<X> $0() {
+    return ($$<X>) $0;
+  }
 
 }

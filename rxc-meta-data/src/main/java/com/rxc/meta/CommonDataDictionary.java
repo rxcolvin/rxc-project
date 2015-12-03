@@ -2,21 +2,23 @@ package com.rxc.meta;
 
 import com.rxc.lang.T2;
 
-import static com.rxc.lang.Tuple.*;
+import static com.rxc.lang.Tuple.$;
 
 //TODO: move to separate package
 public class CommonDataDictionary {
+  public final static String $firstName = "firstName";
+  public final static String $lastName = "lastName";
 
-  public final FieldDef<String> firstName = new FieldDef<>(String.class, "firstName", this::validName);
-  public final FieldDef<String> lastName  = new FieldDef<>(String.class, "lastName", this::validName);
+  public final FieldDef<String> firstName = new FieldDef<>(String.class, $firstName, this::validName);
+  public final FieldDef<String> lastName = new FieldDef<>(String.class, $lastName, this::validName);
 
 
   private T2<ValidState, String> validName(final String s) {
 
     final T2<ValidState, String> ret;
     if (s.length() == 0) {
-      ret = $(ValidState.ERROR, "Must have at least one character"); //TODO whole validation mechanism msut allow xlation.
-    } else if (!onlyHasChars(s))  {
+      ret = $(ValidState.ERROR, "Must have $ least one character"); //TODO whole validation mechanism msut allow xlation.
+    } else if (!onlyHasChars(s)) {
       ret = $(ValidState.ERROR, "Must have chars");
     } else {
       ret = $(ValidState.OK, "");
@@ -24,11 +26,11 @@ public class CommonDataDictionary {
     return ret;
   }
 
-  private static boolean  onlyHasChars(final String s) {
-    for (int i = 0; i < s.length() ; i++) {
-       if (!Character.isAlphabetic(s.charAt(i))) {
-         return false;
-       }
+  private static boolean onlyHasChars(final String s) {
+    for (int i = 0; i < s.length(); i++) {
+      if (!Character.isAlphabetic(s.charAt(i))) {
+        return false;
+      }
     }
     return true;
   }

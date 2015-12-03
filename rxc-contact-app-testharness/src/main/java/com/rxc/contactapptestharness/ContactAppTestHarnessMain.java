@@ -6,7 +6,7 @@ import com.rxc.contactdata.UserContext;
 import com.rxc.dao.QueryData;
 import com.rxc.dao.RxDao;
 import com.rxc.daocache.DaoCache;
-import com.rxc.lang.Array;
+import com.rxc.lang.$$;
 import com.rxc.lang.T2;
 import com.rxc.lang.Timing;
 import com.rxc.lang.TimingImpl;
@@ -20,8 +20,11 @@ import java.util.Collection;
 import java.util.UUID;
 
 
-import static com.rxc.lang.Array.$$;
+import static com.rxc.lang.$$.*;
+import static com.rxc.lang.$$.$$;
+import static com.rxc.lang.$$.$0;
 import static com.rxc.lang.Minutes.Minutes;
+import static com.rxc.meta.CommonDataDictionary.*;
 
 /**
  * Created by richard.colvin on 01/12/2015.
@@ -40,12 +43,15 @@ public class ContactAppTestHarnessMain {
 
     );
     final CommonDataDictionary dd = new CommonDataDictionary();
-    final UIContainer ui = new MockUIContainer(Array.$$("firstName", "lastName"));
+
+    final MockUIContainer contactContainer = MockUIContainer.$(Contact.$myName, $$(MockUIEditField.$($firstName), MockUIEditField.$($lastName)), $0(), $0());
+    final UIContainer rootContainer = MockUIContainer.$("root", $0(), $$(contactContainer), $0());
+
 
     ContactApplication contactApplication = new ContactApplication(dao,
-        dd, ui);
+        dd, rootContainer);
 
-    final MockUIEditField fn = (MockUIEditField) ui.editField("firstName");
+    final MockUIEditField fn = contactContainer.mockEditField($firstName);
 
     fn.mockUpdate("F");
     fn.mockUpdate("Fr");
