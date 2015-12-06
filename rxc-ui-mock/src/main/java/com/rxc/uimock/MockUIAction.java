@@ -33,4 +33,14 @@ public class MockUIAction implements UIAction {
   }
 
 
+  public void mockFire() {
+    if (t != null) {
+      t.$();
+    }
+  }
+
+
+  public static MockUIAction $(String name) {
+    return new MockUIAction(name);
+  }
 }

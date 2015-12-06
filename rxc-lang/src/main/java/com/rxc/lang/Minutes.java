@@ -16,7 +16,7 @@ public class Minutes implements Duration {
     return value * 60 * 1000;
   }
 
-  public static Minutes Minutes(long value) {
+  public static Minutes $(long value) {
     return new Minutes(value);
   }
 }

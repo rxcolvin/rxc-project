@@ -1,5 +1,6 @@
 package com.rxc.contact_app;
 
+import com.rxc.app.LifeCycle;
 import com.rxc.contactdata.Contact;
 import com.rxc.contactdata.UserContext;
 import com.rxc.controller.ControllerModule;
@@ -8,6 +9,7 @@ import com.rxc.dao.RxDao;
 import com.rxc.meta.CommonDataDictionary;
 import com.rxc.meta.EntityMeta;
 import com.rxc.ui.UIAction;
+import com.rxc.ui.UIAppContainer;
 import com.rxc.ui.UIContainer;
 
 import java.util.UUID;
@@ -18,17 +20,23 @@ import static com.rxc.meta.FieldMeta.FieldMeta;
 /**
  * Created by richard.colvin on 13/11/2015.
  */
-public class ContactApplication {
+public class ContactApplication implements LifeCycle {
+
+  public final static String $save = "Save";
 
   private final RxDao<UUID, Contact, UserContext> dao;
 
   private final EntityController<Contact, Contact.Builder> contactEntityController;
+  private final ControllerModule controllerModule;
+  private final UIAction         saveAction;
+  private final UIAppContainer   appContainer;
 
 
   public ContactApplication(
       final RxDao<UUID, Contact, UserContext> dao,
       final CommonDataDictionary dataDictionary,
-      final UIContainer rootContainer) {
+      final UIAppContainer appContainer) {
+    this.appContainer = appContainer;
 
     //TODO: Should be in contact-meta-data module?
     EntityMeta<Contact, Contact.Builder> contactMeta =
@@ -41,12 +49,31 @@ public class ContactApplication {
             Contact.Builder::new
         );
     this.dao = dao;
-    ControllerModule controllerModule = new ControllerModule();
+    controllerModule = new ControllerModule();
 
-    contactEntityController = controllerModule.entityControllerFactory.create(contactMeta, rootContainer.container(Contact.$myName));
+    contactEntityController = controllerModule.entityControllerFactory.create(contactMeta, appContainer.rootContainer()
+                                                                                                       .container(
+                                                                                                           (Contact.$myName)));
 
-    UIAction saveAction = rootContainer.action("Save");
+    saveAction = appContainer.rootContainer().action($save);
+  }
+
+  @Override public void start() {
     saveAction.listener(this::saveContract);
+
+    appContainer.closeListener(() -> true);
+
+  }
+
+  @Override public void stop() {
+    saveAction.listener(null);
+  }
+
+  /**
+   * @return
+   */
+  @Override public boolean isSafeToStop() {
+    return true;
   }
 
   private void saveContract() {

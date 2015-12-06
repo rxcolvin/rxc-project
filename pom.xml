@@ -21,7 +21,7 @@
         <module>rxc-ui-mock</module>
         <module>rxc-controller</module>
 		<module>rxc-lang</module>
-		<module>rxc-tvm</module>
+        <module>rxc-app</module>
 	</modules>
 
 </project>

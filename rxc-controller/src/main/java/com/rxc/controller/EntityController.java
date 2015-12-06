@@ -51,7 +51,7 @@ public class EntityController<E, B extends Builder<E>> {
   }
 
   public final E model() {
-    Builder<E> b = entityMeta.builderFactory.apply();
+    Builder<E> b = entityMeta.builderFactory.$();
     for (int i = 0; i < entityMeta.fieldMetas().size(); i++) {
       FieldMeta fm = entityMeta.fieldMetas().$(i);
       EditFieldController fc = fieldControllers.$(i);
