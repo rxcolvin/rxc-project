@@ -1,12 +1,12 @@
 package com.rxc.main;
 
 import com.rxc.logging.Logger;
+import com.rxc.logging.SyncPwLogStream;
 import com.rxc.logging.WriterLogStream;
 import com.rxc.rest.RestDataModel;
 import com.rxc.rest.RestEngine;
 
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.PrintWriter;
 import java.util.Map;
 
 /**
@@ -15,8 +15,9 @@ import java.util.Map;
 public class Main {
 
   public static void main(String[] args) {
-    Writer writer = new OutputStreamWriter(System.out);
-    Logger logger = new Logger(new WriterLogStream("DEBUG", writer), new WriterLogStream("INFO", writer));
+    PrintWriter writer = new PrintWriter(System.out);
+    Logger      logger = new Logger(new SyncPwLogStream("DEBUG", writer, null, null), new SyncPwLogStream("INFO",
+        writer, null, null));
     RestEngine engine = new RestEngine("Engine", 8080, logger, new EchoDataModel("foo"), new EchoDataModel("bar"));
     engine.start();
   }

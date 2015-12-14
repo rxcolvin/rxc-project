@@ -1,6 +1,8 @@
 package com.rxc.logging;
 
 import com.rxc.lang.F0;
+import com.rxc.lang.F1;
+import com.rxc.lang.F2;
 
 import java.io.PrintWriter;
 
@@ -10,37 +12,41 @@ import java.io.PrintWriter;
 public class SyncPwLogStream implements LogStream {
 
   private boolean isEnabled = true;
-  //TODO STACKTRACE VIEWS
 
   private final String name;
 
   private final PrintWriter pw;
+  private final F2<String, String, F0<String>> f;
+  private final F1<String, Throwable>          ep;
 
-  public SyncPwLogStream(String name, PrintWriter pw) {
+
+  public SyncPwLogStream(String name, PrintWriter pw, F2<String, String, F0<String>> f, F1<String, Throwable> ep) {
     this.name = name;
     this.pw = pw;
+    this.f = f;
+    this.ep = ep;
   }
 
-  @Override public void $(F0<String> log) {
+  @Override public final void $(F0<String> log) {
     if (isEnabled) {
       synchronized (pw) {
-        pw.write(log.$());
+        pw.write(f.$(name, log));
         pw.write('\n');
         pw.flush();
       }
     }
   }
 
-  @Override public void $(F0<String> log, F0<Exception> e) {
+  @Override public final void $(F0<String> log, F0<Throwable> e) {
     if (isEnabled) {
       synchronized (pw) {
-        pw.write(log.$());
+        pw.write(f.$(name, log));
         pw.write('\n');
-        e.$().printStackTrace(pw);
+        pw.write(ep.$(e.$()));
       }
     }
-
   }
+
 
   @Override public boolean isEnabled() {
     return isEnabled;
@@ -49,4 +55,5 @@ public class SyncPwLogStream implements LogStream {
   @Override public void isEnabled(boolean flag) {
     isEnabled = flag;
   }
+
 }

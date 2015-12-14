@@ -3,6 +3,7 @@ package com.rxc.ui.tvm;
 import com.rxc.lang.F0V;
 import com.rxc.ui.UIAction;
 import com.rxc.ui.UIComponent;
+import org.teavm.jso.dom.events.Event;
 import org.teavm.jso.dom.html.HTMLButtonElement;
 import org.teavm.jso.dom.html.HTMLDocument;
 import org.teavm.jso.dom.html.HTMLElement;
@@ -10,16 +11,17 @@ import org.teavm.jso.dom.html.HTMLElement;
 /**
  * Created by richard.colvin on 13/11/2015.
  */
-public class UIActionImpl implements UIAction {
+public class TeavmUIAction implements UIAction {
 
   private final HTMLButtonElement element;
   private final String name;
 
   private F0V listener;
 
-  public UIActionImpl(String name, final HTMLButtonElement element) {
+  public TeavmUIAction(String name, final HTMLButtonElement element) {
     this.element = element;
     this.name = name;
+    element.addEventListener("click", this::onClick);
   }
 
   @Override
@@ -34,6 +36,12 @@ public class UIActionImpl implements UIAction {
 
   @Override
   public void listener(final F0V t) {
-    this.listener = t;;
+    this.listener = t;
+  }
+
+  private void onClick(Event event) {
+    if (listener != null) {
+      listener.$();
+    }
   }
 }

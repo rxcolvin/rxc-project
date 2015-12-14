@@ -12,7 +12,7 @@ import org.teavm.jso.dom.html.HTMLInputElement;
 /**
  * Created by richard.colvin on 13/11/2015.
  */
-public class UIStringEditFieldImpl implements UIEditField {
+public class TeavmUIEditField implements UIEditField {
 
   private final String name;
   private final HTMLInputElement element;
@@ -21,7 +21,7 @@ public class UIStringEditFieldImpl implements UIEditField {
   private boolean focus;
 
 
-  public UIStringEditFieldImpl(String name, final HTMLInputElement element) {
+  public TeavmUIEditField(String name, final HTMLInputElement element) {
     this.name = name;
     this.element = element;
     setInnerStatus(Status.EMPTY);
