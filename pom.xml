@@ -22,6 +22,7 @@
         <module>rxc-controller</module>
 		<module>rxc-lang</module>
         <module>rxc-app</module>
+        <module>rxc-scratch</module>
 	</modules>
 
 </project>
