@@ -34,6 +34,7 @@ public class ContactAppTestHarnessMain {
 
   public static void main(String[] args) {
 
+
     final Timing timing = new TimingImpl();
     final RxDao<UUID, Contact, UserContext> dao = new DaoCache<>(
         $(60),
@@ -45,7 +46,7 @@ public class ContactAppTestHarnessMain {
     );
     final CommonDataDictionary dd = new CommonDataDictionary();
 
-    final MockUIContainer contactContainer = MockUIContainer.$(Contact.$myName, $$(MockUIEditField.$($firstName), MockUIEditField.$($lastName)), $0(), $0());
+    final MockUIContainer contactContainer = MockUIContainer.$(Contact.$name, $$(MockUIEditField.$($firstName), MockUIEditField.$($lastName)), $0(), $0());
     final UIContainer        rootContainer = MockUIContainer.$("root", $0(), $$(contactContainer), $$(MockUIAction.$
         ($save)));
     final MockUIAppContainer appContainer  = MockUIAppContainer.$(rootContainer);
@@ -58,8 +59,11 @@ public class ContactAppTestHarnessMain {
 
     final MockUIEditField fn = contactContainer.mockEditField($firstName);
 
+    fn.mockUpdate("1");
     fn.mockUpdate("F");
     fn.mockUpdate("Fr");
+    fn.mockUpdate("w");
+
 
 
   }

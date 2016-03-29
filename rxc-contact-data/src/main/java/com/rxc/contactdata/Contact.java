@@ -2,12 +2,13 @@ package com.rxc.contactdata;
 
 
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * Created by richard.colvin on 13/11/2015.
  */
 public class Contact {
-  public final static String $myName = "Contact";
+  public final static String $name = "Contact";
 
   public final UUID id;
   public final String firstName;
@@ -20,13 +21,13 @@ public class Contact {
     this.lastName = lastName;
   }
 
-  public static class Builder implements com.rxc.lang.Builder<Contact> {
+  public static class Builder implements Supplier<Contact> {
     public String firstName;
     public String lastName;
 
 
     @Override
-    public Contact build() {
+    public Contact get() {
       return new Contact(null, firstName, lastName);
     }
   }

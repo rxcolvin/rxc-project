@@ -10,9 +10,10 @@ import com.rxc.meta.CommonDataDictionary;
 import com.rxc.meta.EntityMeta;
 import com.rxc.ui.UIAction;
 import com.rxc.ui.UIAppContainer;
-import com.rxc.ui.UIContainer;
 
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 import static com.rxc.lang.$$.$$;
 import static com.rxc.meta.FieldMeta.FieldMeta;
@@ -39,21 +40,21 @@ public class ContactApplication implements LifeCycle {
     this.appContainer = appContainer;
 
     //TODO: Should be in contact-meta-data module?
-    EntityMeta<Contact, Contact.Builder> contactMeta =
-        new EntityMeta<Contact, Contact.Builder>(
-            Contact.$myName,
+    EntityMeta<Contact, Contact.Builder> contactMeta = new EntityMeta<>(
+            Contact.$name,
             Contact.class,
             $$(
-                FieldMeta(dataDictionary.firstName, c -> c.firstName, (v, b) -> b.firstName = v),
-                FieldMeta(dataDictionary.lastName, c -> c.lastName, (v, b) -> b.lastName = v)),
+                    FieldMeta(dataDictionary.firstName, c -> c.firstName, (s, b) -> b.firstName = s),
+                    FieldMeta(dataDictionary.lastName, c -> c.lastName, (s, b) -> b.lastName = s)
+            ),
             Contact.Builder::new
-        );
+    );
     this.dao = dao;
     controllerModule = new ControllerModule();
 
     contactEntityController = controllerModule.entityControllerFactory.create(contactMeta, appContainer.rootContainer()
                                                                                                        .container(
-                                                                                                           (Contact.$myName)));
+                                                                                                           (Contact.$name)));
 
     saveAction = appContainer.rootContainer().action($save);
   }

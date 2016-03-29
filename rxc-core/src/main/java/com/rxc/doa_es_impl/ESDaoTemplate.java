@@ -58,7 +58,7 @@ public class ESDaoTemplate<K, T, C> implements Dao<K, T, C> {
 
 
   @Override
-  public T getById(final K id) {
+  public T getById(final C context, final K id) {
     return null;
   }
 
@@ -68,8 +68,13 @@ public class ESDaoTemplate<K, T, C> implements Dao<K, T, C> {
   }
 
   @Override
-  public void installSchema() {
+  public void remove(QueryData<T> queryData, C context) {
 
+  }
+
+  @Override
+  public <R> R queryMeta(C context, QueryData<R> queryData) {
+    return null;
   }
 
   private void rethrow(Exception e) throws RuntimeException {

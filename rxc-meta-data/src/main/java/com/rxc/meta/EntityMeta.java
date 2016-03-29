@@ -1,41 +1,40 @@
 package com.rxc.meta;
 
 import com.rxc.lang.$$;
-import com.rxc.lang.Builder;
-import com.rxc.lang.F0;
 import com.rxc.lang.$_;
+
+import java.util.function.Supplier;
 
 import static com.rxc.lang.$_.$_;
 
 /**
  * TODO: Allow versioning of fields somehow?
  *
- * @param <T>
- * @param <B>
+ * @param <E>
  */
-public final class EntityMeta<T, B extends Builder<T>> {
+public final class EntityMeta<E, B extends Supplier<E>> {
 
-  public final  String                          name;
-  public final  Class<T>                        tType;
-  private final $$<FieldMeta<?, T, B>> fieldMetas;
-  public final $_<String, FieldMeta<?, T, B>> fieldMetaMap;
-  public final  F0<B>                           builderFactory;
+    public final String name;
+    public final Class<E> tType;
+    private final $$<FieldMeta<?, E, B>> fieldMetas;
+    public final $_<String, FieldMeta<?, E, B>> fieldMetaMap;
+    public final Supplier<? extends Supplier<E>> builderFactory;
 
-  public EntityMeta(String name, Class<T> tType, $$<FieldMeta<?, T, B>> fieldMetas, F0<B> builderFactory) {
-    this.name = name;
-    this.tType = tType;
-    this.fieldMetas = fieldMetas;
-    this.builderFactory = builderFactory;
-    fieldMetaMap = $_(fieldMetas, x -> x.name());
-  }
+    public EntityMeta(String name, Class<E> tType, $$<FieldMeta<?, E, B>> fieldMetas, Supplier<B> builderFactory) {
+        this.name = name;
+        this.tType = tType;
+        this.fieldMetas = fieldMetas;
+        this.builderFactory = builderFactory;
+        fieldMetaMap = $_(fieldMetas, x -> x.fieldDef.name);
+    }
 
 
-  public FieldMeta<?, T, B> fieldMeta(final String name) {
-    return fieldMetaMap.$(name);
-  }
+    public FieldMeta<?, E, B> fieldMeta(final String name) {
+        return fieldMetaMap.$(name);
+    }
 
-  public $$<FieldMeta<?, T, B>> fieldMetas() {
-    return fieldMetas;
-  }
+    public $$<FieldMeta<?, E, B>> fieldMetas() {
+        return fieldMetas;
+    }
 
 }

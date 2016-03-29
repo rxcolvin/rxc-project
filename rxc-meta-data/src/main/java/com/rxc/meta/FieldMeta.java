@@ -1,44 +1,48 @@
 package com.rxc.meta;
 
-import com.rxc.lang.Builder;
-import com.rxc.lang.F1;
-import com.rxc.lang.F2V;
 import com.rxc.lang.T2;
 
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-public final class FieldMeta<T, X, B extends Builder<X>>  {
 
-  private final FieldDef<T> fieldDef;
-  private final F1<T, X>    getter;
-  private final F2V<T, B>   setter;
+public final class FieldMeta<T, E, B> {
 
-  public FieldMeta(FieldDef<T> fieldDef, F1<T, X> getter, F2V<T, B> setter) {
-    this.fieldDef = fieldDef;
-    this.getter = getter;
-    this.setter = setter;
-  }
+    public final FieldDef<T> fieldDef;
+    public final Function<E, T> getter;
+    public final BiConsumer<T, B> setter;
 
-  public Class<T> tType() {
-    return fieldDef.tType;
-  }
+    public FieldMeta(FieldDef<T> fieldDef, Function<E, T> getter, BiConsumer<T, B> setter) {
+        this.fieldDef = fieldDef;
+        this.getter = getter;
+        this.setter = setter;
+    }
 
-  public String name() {
-    return fieldDef.name;
-  }
+    public Class<T> tType() {
+        return fieldDef.tType;
+    }
 
-  public F1<T2<ValidState, String>, T>  validator() {
-    return fieldDef.validator;
-  }
+    public String name() {
+        return fieldDef.name;
+    }
 
-  public F1<T, X> getter() {
-    return getter;
-  }
+    public Function<T, T2<ValidState, String>> validator() {
+        return fieldDef.validator;
+    }
 
-  public F2V<T, B> setter() {
-    return setter;
-  }
 
-  public static <T, X, B extends Builder<X>> FieldMeta<T, X, B> FieldMeta(FieldDef<T> fieldDef, F1<T, X> getter, F2V<T, B> setter) {
-    return new FieldMeta<>(fieldDef, getter, setter);
-  }
+    public Function<E, T> getter() {
+        return getter;
+    }
+
+    public BiConsumer<T, B> setter() {
+        return setter;
+    }
+
+    public static <T, E, B> FieldMeta<T, E, B> FieldMeta(
+            final FieldDef<T> fieldDef,
+            final Function<E, T> getter,
+            final BiConsumer<T, B> setter) {
+        return new FieldMeta<>(fieldDef, getter, setter);
+    }
 }

@@ -3,13 +3,13 @@ package com.rxc.logging;
 import com.rxc.lang.F0;
 import com.rxc.lang.F1;
 
+import java.util.function.Supplier;
+
 /**
  * Created by richard on 05/12/2015.
  */
 public interface LogStream {
-  void $(F0<String> log);
-
-  void $(F0<String> log, F0<Throwable> e);
+  void $(Supplier<Object> log);
 
   boolean isEnabled();
 
