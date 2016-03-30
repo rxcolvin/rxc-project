@@ -19,8 +19,8 @@ public class TeavmUIContainer implements UIContainer {
 
 
   final $_<String, TeavmUIEditField> editFieldMap;
-  final $_<String, TeavmUIContainer> containerMap;
-  final $_<String, TeavmUIAction>    actionMap;
+  final $_<String, TeavmUIContainer> containerMap = null; //TODO
+  final $_<String, TeavmUIAction>    actionMap = null;
 
 
   public TeavmUIContainer(String name, HTMLElement ui) {
@@ -31,7 +31,7 @@ public class TeavmUIContainer implements UIContainer {
   }
 
   private $_<String, TeavmUIEditField> buildEditFieldMap(HTMLElement ui) {
-
+    return null;
   }
 
 

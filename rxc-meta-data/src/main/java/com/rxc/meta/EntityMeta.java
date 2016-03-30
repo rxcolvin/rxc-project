@@ -18,7 +18,7 @@ public final class EntityMeta<E, B extends Supplier<E>> {
     public final Class<E> tType;
     private final $$<FieldMeta<?, E, B>> fieldMetas;
     public final $_<String, FieldMeta<?, E, B>> fieldMetaMap;
-    public final Supplier<? extends Supplier<E>> builderFactory;
+    public final Supplier<B> builderFactory;
 
     public EntityMeta(String name, Class<E> tType, $$<FieldMeta<?, E, B>> fieldMetas, Supplier<B> builderFactory) {
         this.name = name;

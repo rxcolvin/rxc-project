@@ -16,8 +16,8 @@ public class Main {
 
   public static void main(String[] args) {
     PrintWriter writer = new PrintWriter(System.out);
-    Logger      logger = new Logger(new SyncPwLogStream("DEBUG", writer, null, null), new SyncPwLogStream("INFO",
-        writer, null, null));
+    Logger      logger = new Logger(new SyncPwLogStream("DEBUG", writer), new SyncPwLogStream("INFO",
+        writer));
     RestEngine engine = new RestEngine("Engine", 8080, logger, new EchoDataModel("foo"), new EchoDataModel("bar"));
     engine.start();
   }

@@ -70,7 +70,7 @@ public class RestEngine {
         out.flush();
         out.close();
       } catch (Exception e) {
-          logger.info.write(()-> "Caught Exception", ()->e);
+          logger.info.$(()->e);
       }
     }
   }
