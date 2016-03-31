@@ -1,5 +1,6 @@
 package com.rxc.meta.util;
 
+import com.rxc.lang.$_;
 import com.rxc.lang.F1C;
 import com.rxc.meta.EntityMeta;
 import com.rxc.meta.FieldMeta;
@@ -8,37 +9,35 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 /**
- * Created by richard.colvin on 29/03/2016.
+ * Created by richard.colvin on 31/03/2016.
  */
-public class EntityConverter<E, B extends Supplier<E>, F> {
-
+public class EntityFromMap<E, B extends Supplier<E>> {
     private final EntityMeta<E, B> entityMeta;
-    private final EntityMeta<F, ?> fromEntityMeta;
     private final F1C<Object> converter;
 
-    public EntityConverter(
+    public EntityFromMap(
             final EntityMeta<E, B> entityMeta,
-            final EntityMeta<F, ?> fromEntityMeta,
             final F1C<Object> converter
+
     ) {
         this.entityMeta = entityMeta;
-        this.fromEntityMeta = fromEntityMeta;
         this.converter = converter;
-        //TODO: assert compatibility
     }
 
-    public final E apply(F from) {
-
+    public final E apply($_<String, Object> from) {
         final B builder = entityMeta.builderFactory.get();
-
         for (FieldMeta<?, E, B> fieldMeta : entityMeta.fieldMetas()) {
             final String name = fieldMeta.fieldDef.name;
-            final FieldMeta<?, F, ?> fromFieldMeta = fromEntityMeta.fieldMetaMap.$(name);
-            final Object fromValue = fromFieldMeta.getter.apply(from);
-            final Object toValue = converter.apply(fromValue, fieldMeta.fieldDef.tType);
             final BiConsumer<Object, B> bb = (BiConsumer<Object, B>) fieldMeta.setter;
-            bb.accept(toValue, builder);
+            if (from.isDefinedFor(name)) {
+                final Object fromValue = from.$(name);
+                final Object toValue = converter.apply(fromValue, fieldMeta.fieldDef.tType);
+                bb.accept(toValue, builder);
+            } else {
+                bb.accept(fieldMeta.defaultValue, builder);
+            }
         }
+
         return builder.get();
     }
 }
