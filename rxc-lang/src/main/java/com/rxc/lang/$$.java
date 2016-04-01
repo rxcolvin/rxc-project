@@ -5,70 +5,73 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
+/**
+ * A Simple Immutable List
+ * @param <T> element type
+ */
 public class $$<T> implements Iterable<T> {
-  private final List<T> ts;
+    private final List<T> ts;
 
-  @SafeVarargs
-  private $$(T... ts) {
-    this.ts = Arrays.asList(ts);
-  }
-
-  private $$(List<T> ts) {
-    this.ts = ts;
-  }
-
-
-  public final int size() {
-    return ts.size();
-  }
-
-  public T $(int index) {
-    return ts.get(index);
-  }
-
-  public <X> $$<X> map(F1<X, T> f) {
-    List<X> xs = new ArrayList<>(ts.size());
-    for (T t : ts) {
-      xs.add(f.$(t));
+    @SafeVarargs
+    private $$(T... ts) {
+        this.ts = Arrays.asList(ts);
     }
-    return new $$<>(xs);
-  }
 
+    private $$($$<T>... tts) {
+        ts = new ArrayList<>();
+        for ($$<T> tt : tts) {
+            for (T t : tt) {
+                ts.add(t);
+            }
+        }
+    }
 
-  @Override
-  public Iterator<T> iterator() {
-    return new MyIterator();
-  }
+    private $$(List<T> ts) {
+        this.ts = ts;
+    }
 
-  private class MyIterator implements Iterator<T> {
+    public final int size() {
+        return ts.size();
+    }
 
-    int ref = 0;
+    public T $(int index) {
+        return ts.get(index);
+    }
 
-    @Override
-    public boolean hasNext() {
-      return ref < ts.size();
+    public Stream<T> stream() {
+        return ts.stream();
     }
 
     @Override
-    public T next() {
-      return ts.get(ref++);
+    public Iterator<T> iterator() {
+        return ts.iterator();
     }
-  }
 
-  /**
-   *
-   * @return
-   */
+    /**
+     * Construct from a varargs of T's
+     * @return
+     */
+    public static <T> $$<T> $$(T... ts) {
+        return new $$<T>(ts);
+    }
 
-  public static <T> $$<T> $$(T... ts) {
-    return new $$<T>(ts);
-  }
+    /**
+     * Construct from a varargs of $$[T] - ie a list of lists
+     * @param tts
+     * @param <T>
+     * @return
+     */
+    public static <T> $$<T> $$($$<T>... tts) {
+        return new $$<T>(tts);
+    }
 
-  private  final static $$<?> $0 = new $$<>();
+    private final static $$<?> $0 = new $$<>();
 
-  public static <X> $$<X> $0() {
-    return ($$<X>) $0;
-  }
+    /** Empty $$ */
+    public static <X> $$<X> $0() {
+        return ($$<X>) $0;
+    }
 
 }

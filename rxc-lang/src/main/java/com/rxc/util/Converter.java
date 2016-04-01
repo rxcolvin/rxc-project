@@ -3,7 +3,6 @@ package com.rxc.util;
 import com.rxc.lang.*;
 
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.rxc.lang.$$.$$;
@@ -11,15 +10,19 @@ import static com.rxc.lang.$_.*;
 import static com.rxc.lang.Tuple.*;
 
 /**
- * Created by richard.colvin on 30/03/2016.
+ * Converts a given instance to a given type.
  */
 public class Converter implements F1C<Object> {
     final $_<T2<Class, Class>, Function<Object, Object>> map;
 
     public Converter(
-            $$<P> t3s
+            final $$<P> ps
     ) {
-        map = $_(t3s, p -> $(p.from, p.to), p -> p.f);
+        map = $_(
+                ps, p -> $(p.from, p.to),
+                p -> p.f,
+                (t) -> {throw new NoneFound(t._1, t._2);}
+        );
     }
 
     @Override
@@ -27,16 +30,15 @@ public class Converter implements F1C<Object> {
         return (R) (o.getClass() != aClass ? map.$($(o.getClass(), aClass)).apply(o) : o);
     }
 
-    //    @Override
-//    public <R> R apply(Object o, Class aClass) {
-//    }
-
+    /**
+     * Parameter Structure
+     */
     public static class P<F, T> {
         public final Class<F> from;
         public final Class<T> to;
         public final Function<F, T> f;
 
-        public P(
+        private P(
                 final Class<F> from,
                 final Class<T> to,
                 final Function<F, T> f
@@ -47,23 +49,44 @@ public class Converter implements F1C<Object> {
         }
     }
 
-    public static <F, T>  P<F,T> P(
-        final Class<F> from,
-        final Class<T> to,
-        final Function<F, T> f
+    /**
+     * Constructor Function
+     */
+    public static <F, T> P<F, T> P(
+            final Class<F> from,
+            final Class<T> to,
+            final Function<F, T> f
 
     ) {
-        return new P<F, T>(from, to, f);
+        return new P<>(from, to, f);
     }
 
     interface $ {
-        P int2String = P(Integer.class, String.class, Object::toString);
-        P string2Int = P(String.class, Integer.class, Integer::parseInt);
+        $$<P> ps = $$(
+                P(Integer.class, String.class, Object::toString),
+                P(String.class, Integer.class, Integer::parseInt),
+                P(Long.class, String.class, Object::toString),
+                P(String.class, Long.class, Long::parseLong),
+                P(Boolean.class, String.class, Object::toString),
+                P(String.class, Boolean.class, Boolean::parseBoolean)
+        );
+
     }
 
-    public static void main(String[] args) {
-        Converter converter = new Converter($$($.int2String, $.string2Int));
-        Object x = converter.apply(23, String.class);
+    public static class NoneFound extends RuntimeException {
+        public final Class from;
+        public final Class to;
+        private final String msg;
 
+        public NoneFound(Class from, Class to) {
+            this.from = from;
+            this.to = to;
+            msg = "No Converter Found to convert from "  + from + " to " + to;
+        }
+
+        @Override
+        public String getMessage() {
+            return msg;
+        }
     }
 }

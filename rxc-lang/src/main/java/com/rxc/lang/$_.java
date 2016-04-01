@@ -56,4 +56,8 @@ public class $_<K, T> {
     public static <K, T, X> $_<K, T> $_($$<X> ts, F1<K, X> f1, F1<T, X> f2) {
         return new $_<K, T>(ts, f1, f2, null);
     }
+
+    public static <K, T, X> $_<K, T> $_($$<X> ts, F1<K, X> f1, F1<T, X> f2, F1<T, K> whenNotFound) {
+        return new $_<K, T>(ts, f1, f2, whenNotFound);
+    }
 }
