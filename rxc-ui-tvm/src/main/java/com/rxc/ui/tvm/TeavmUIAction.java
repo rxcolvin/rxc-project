@@ -1,12 +1,9 @@
 package com.rxc.ui.tvm;
 
-import com.rxc.lang.F0V;
+import com.rxc.lang.functional.F0V;
 import com.rxc.ui.UIAction;
-import com.rxc.ui.UIComponent;
 import org.teavm.jso.dom.events.Event;
 import org.teavm.jso.dom.html.HTMLButtonElement;
-import org.teavm.jso.dom.html.HTMLDocument;
-import org.teavm.jso.dom.html.HTMLElement;
 
 /**
  * Created by richard.colvin on 13/11/2015.

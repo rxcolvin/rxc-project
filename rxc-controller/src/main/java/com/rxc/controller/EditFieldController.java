@@ -1,12 +1,13 @@
 package com.rxc.controller;
 
-import com.rxc.lang.*;
+import com.rxc.lang.tuple.T2;
+import com.rxc.lang.tuple.T3;
 import com.rxc.meta.ValidState;
 import com.rxc.ui.UIEditField;
 
 import java.util.function.Function;
 
-import static com.rxc.lang.Tuple.*;
+import static com.rxc.lang.tuple.Tuple.*;
 
 public class EditFieldController<T> {
 

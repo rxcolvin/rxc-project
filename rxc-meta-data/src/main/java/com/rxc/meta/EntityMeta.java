@@ -1,11 +1,11 @@
 package com.rxc.meta;
 
-import com.rxc.lang.$$;
-import com.rxc.lang.$_;
+import com.rxc.lang.collection.$$;
+import com.rxc.lang.collection.$_;
 
 import java.util.function.Supplier;
 
-import static com.rxc.lang.$_.$_;
+import static com.rxc.lang.collection.$_.$_;
 
 /**
  * TODO: Allow versioning of fields somehow?

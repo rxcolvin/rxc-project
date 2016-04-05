@@ -1,10 +1,13 @@
-import java.util.Arrays;
-import java.util.List;
+import com.rxc.lang.functional.CaseFunction;
+
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
+
+import static com.rxc.lang.collection.$$.$$;
+import static com.rxc.lang.tuple.Tuple.*;
 
 /**
  * map HttpRequest -> Context1
@@ -14,10 +17,10 @@ import java.util.stream.Collectors;
 public class Scratch {
 
 
-    // Dispatch
+    // com.rxc.lang.functional.CaseFunction
 
     public enum HttpAction {
-        GET, PUT
+        GET, PUT, DELETE
     }
 
     public enum HttpProtocol {
@@ -55,89 +58,101 @@ public class Scratch {
 
     }
 
+    enum ReqType {
+        PF_GET,
+        PF_QUERY,
+        PF_DELETE,
+        PF_UPDATE,
+        PF_CREATE,
+        PF_HEALTHCHECK,
+        PF_NODE_HEALTH,
+        UNKNOWN
+    }
 
-    public static class DispatchContext {
-        public final UUID authKey;
-        public final Class<?> assetType;
+    public static class ReqKey {
+        public final ReqType reqType;
+        public final String assetType;
 
-        public DispatchContext(UUID authKey, Class<?> assetType) {
-            this.authKey = authKey;
+        public ReqKey(
+                final ReqType reqType,
+                final String assetType
+        ) {
+            this.reqType = reqType;
             this.assetType = assetType;
         }
-    }
-
-    public static class MatchParams {
-        public final HttpProtocol httpProtocol;
-        public final List<String> path;
-        public final HttpAction action;
-
-        public MatchParams(HttpProtocol httpProtocol, List<String> path, HttpAction action) {
-            this.httpProtocol = httpProtocol;
-            this.path = path;
-            this.action = action;
-        }
-    }
-
-
-    public static class Dispatch implements Function<HttpRequest, HttpResponse> {
-        final List<Function<MatchParams, Optional<Function<HttpRequest, HttpResponse>>>> matchers;
-        final Function<HttpRequest, MatchParams> buildMatchParameters;
-
-        public Dispatch(
-                final Function<HttpRequest, MatchParams> buildMatchParameters,
-                final Function<MatchParams, Optional<Function<HttpRequest, HttpResponse>>>... matchers
-        ) {
-            this.buildMatchParameters = buildMatchParameters;
-            this.matchers = Arrays.asList(matchers);
-        }
-
-        public HttpResponse apply(final HttpRequest httpRequest) {
-
-            //TODO: Implement Cache
-            List<Function<HttpRequest, HttpResponse>> x =
-                    matchers.stream()
-                            .map((it) -> it.apply(buildMatchParameters.apply(httpRequest)))
-                            .filter(Optional::isPresent)
-                            .map(Optional::get)
-                            .collect(Collectors.toList());
-            if (x.size() == 1) {
-                return x.get(0).apply(httpRequest);
-            }
-            throw new RuntimeException("No Matcher or too many matches"); //TODO define exceptions
-        }
-    }
-
-
-    // Non-Rest Handlers
-    public static class FileReqHandler implements Function<MatchParams, Optional<Function<HttpRequest, HttpResponse>>> {
 
         @Override
-        public Optional<Function<HttpRequest, HttpResponse>> apply(MatchParams matchParams) {
-            return null;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ReqKey reqKey = (ReqKey) o;
+
+            if (reqType != reqKey.reqType) return false;
+            return assetType != null ? assetType.equals(reqKey.assetType) : reqKey.assetType == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = reqType != null ? reqType.hashCode() : 0;
+            result = 31 * result + (assetType != null ? assetType.hashCode() : 0);
+            return result;
         }
     }
+
+
+
 
     //Rest Layer
 
 
-    public static class GetByIdRestReq implements Function<HttpRequest, HttpResponse> {
+    public static class PFServiceReqWrapper<Req, Resp, In, Out, Ctx> implements Function<Req, Resp> {
+
+        private final Function<Req, In> xin;
+        private final Function<Out, Resp> xout;
+        private final Function<Req, Ctx> xCtx;
+        private final BiFunction<Ctx, In, Out> service;
+
+        public PFServiceReqWrapper(
+                final Function<Req, In> xin,
+                final Function<Out, Resp> xout,
+                final Function<Req, Ctx> xCtx,
+                final BiFunction<Ctx, In, Out> service
+        ) {
+            this.xin = xin;
+            this.xout = xout;
+            this.xCtx = xCtx;
+            this.service = service;
+        }
+
 
         @Override
-        public HttpResponse apply(HttpRequest httpRequest) {
-            return null;
+        public Resp apply(Req req) {
+            final Ctx ctx = xCtx.apply(req); //Could throw Exception
+            final In in = xin.apply(req); //Could throw an exception
+            final Out out = service.apply(ctx, in);
+            return xout.apply(out);
         }
     }
 
 
-    public static class SimplePFRestlet
-            implements Function<MatchParams, Optional<Function<HttpRequest, HttpResponse>>> {
-        public Function<HttpRequest, HttpResponse> getByIdReq;
-        public Function<HttpRequest, HttpResponse> putReq;
-        public Function<HttpRequest, HttpResponse> deleteReq;
+    public static class PFRestlet {
+        public final Function<HttpRequest, HttpResponse> getByIdReq;
+        public final Function<HttpRequest, HttpResponse> putReq;
+        public final Function<HttpRequest, HttpResponse> deleteReq;
+        public final Function<HttpRequest, HttpResponse> queryReq;
 
-        @Override
-        public Optional<Function<HttpRequest, HttpResponse>> apply(MatchParams matchParams) {
-            return null;
+        public PFRestlet(
+                final Function<HttpRequest, HttpResponse> getByIdReq,
+                final Function<HttpRequest, HttpResponse> putReq,
+                final Function<HttpRequest, HttpResponse> deleteReq,
+                final Function<HttpRequest, HttpResponse> queryReq
+        ) {
+            this.getByIdReq = getByIdReq;
+            this.putReq = putReq;
+            this.deleteReq = deleteReq;
+            this.queryReq = queryReq;
         }
     }
 
@@ -146,34 +161,45 @@ public class Scratch {
     public static class FooDto {
     }
 
-    public static class FooByIdParams {
-    }
 
-    public static class FooPFServiceFactory implements Supplier<PFService<FooDto, FooByIdParams>> {
+    public static class PFServiceFactory<DTO, E> implements Supplier<PFService<DTO>> {
 
 
-        private final PFService<FooDto, FooByIdParams> fooService;
+        private final PFService<DTO> fooService;
 
-        public FooPFServiceFactory() {
-            fooService = new PFService<>(it -> new FooDto());
+        public PFServiceFactory() {
+            fooService = new PFService<>(it -> new FooDto(), update);
         }
 
         @Override
-        public PFService<FooDto, FooByIdParams> get() {
+        public PFService<DTO> get() {
             return fooService;
         }
+
+
+
     }
 
-    public static class PFService<DTO_TYPE, ID_PARAMS> {
+    public static class PFService<DTO_TYPE> {
 
 
-        public final Function<ID_PARAMS, DTO_TYPE> getById;
+        public final Function<UUID, DTO_TYPE> getById;
 
-        public PFService(Function<ID_PARAMS, DTO_TYPE> getById) {
+        public final BiConsumer<UUID, DTO_TYPE> update;
+
+        public PFService(
+                final Function<UUID, DTO_TYPE> getById,
+                final BiConsumer<UUID, DTO_TYPE> update
+        ) {
             this.getById = getById;
+            this.update = update;
         }
     }
 
+
+    public static class PFContext {
+
+    }
 
     //
     public static class ID {
@@ -240,10 +266,45 @@ public class Scratch {
         }
     }
 
+    static Function<HttpRequest, ReqKey> keyFunc = r -> new ReqKey(ReqType.PF_GET, "");
+
+    static Function<HttpRequest, UUID> xin;
+
+    static Function<FooDto,HttpResponse> xout;
+    static Function<HttpRequest, PFContext> xCtx;
+
 
     public static void main(String[] args) {
         //TODO: create a test harness
-        I won't' compile
+
+        final HttpRequest httpRequest = new HttpRequest(
+                HttpAction.GET,
+                HttpProtocol.HTTP,
+                "/foo/adadsad/asdsadsad".split("/"),
+                null,
+                null
+        );
+
+        final
+
+        final CaseFunction<HttpRequest, HttpResponse, ReqKey> caseFunction = new CaseFunction<>(
+                "dispatcher",
+                $$(
+                        $(
+                                new ReqKey(ReqType.PF_GET, "foo"),
+                                new PFServiceReqWrapper<>(
+                                        xin,
+                                        xout,
+                                        xCtx,
+                                        fooGetService
+                                )
+                        )
+                ),
+                keyFunc
+        );
+
+
+
     }
 }
 

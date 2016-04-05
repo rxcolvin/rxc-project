@@ -1,7 +1,6 @@
 package com.rxc.meta;
 
-import com.rxc.lang.F1;
-import com.rxc.lang.T2;
+import com.rxc.lang.tuple.T2;
 
 import java.util.function.Function;
 

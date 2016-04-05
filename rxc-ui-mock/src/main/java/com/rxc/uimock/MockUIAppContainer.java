@@ -1,6 +1,6 @@
 package com.rxc.uimock;
 
-import com.rxc.lang.F0;
+import com.rxc.lang.functional.F0;
 import com.rxc.ui.UIAppContainer;
 import com.rxc.ui.UIContainer;
 

@@ -1,4 +1,6 @@
-package com.rxc.lang;
+package com.rxc.lang.collection;
+
+import com.rxc.lang.tuple.T3;
 
 /**
  * Immutable Map Of Maps : shit implementation

@@ -1,6 +1,6 @@
 package com.rxc.uimock;
 
-import com.rxc.lang.F0V;
+import com.rxc.lang.functional.F0V;
 import com.rxc.ui.UIAction;
 
 /**

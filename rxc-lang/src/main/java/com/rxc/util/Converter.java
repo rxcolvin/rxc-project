@@ -1,13 +1,16 @@
 package com.rxc.util;
 
-import com.rxc.lang.*;
+import com.rxc.lang.collection.$$;
+import com.rxc.lang.collection.$_;
+import com.rxc.lang.functional.F1C;
+import com.rxc.lang.tuple.T2;
 
 
 import java.util.function.Function;
 
-import static com.rxc.lang.$$.$$;
-import static com.rxc.lang.$_.*;
-import static com.rxc.lang.Tuple.*;
+import static com.rxc.lang.collection.$$.$$;
+import static com.rxc.lang.collection.$_.*;
+import static com.rxc.lang.tuple.Tuple.*;
 
 /**
  * Converts a given instance to a given type.

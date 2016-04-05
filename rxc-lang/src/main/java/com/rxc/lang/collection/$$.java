@@ -1,4 +1,4 @@
-package com.rxc.lang;
+package com.rxc.lang.collection;
 
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.rxc.ui;
 
-import com.rxc.lang.F1;
-import com.rxc.lang.T3;
+import com.rxc.lang.functional.F1;
+import com.rxc.lang.tuple.T3;
 
 /**
  *  Simple Edit field

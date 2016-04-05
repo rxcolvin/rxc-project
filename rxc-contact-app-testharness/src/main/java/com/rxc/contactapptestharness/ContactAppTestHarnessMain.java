@@ -6,7 +6,7 @@ import com.rxc.contactdata.UserContext;
 import com.rxc.dao.QueryData;
 import com.rxc.dao.RxDao;
 import com.rxc.daocache.DaoCache;
-import com.rxc.lang.T2;
+import com.rxc.lang.tuple.T2;
 import com.rxc.lang.Timing;
 import com.rxc.lang.TimingImpl;
 import com.rxc.meta.CommonDataDictionary;
@@ -22,10 +22,9 @@ import java.util.UUID;
 
 
 import static com.rxc.contact_app.ContactApplication.$save;
-import static com.rxc.lang.$$.$$;
-import static com.rxc.lang.$$.$0;
+import static com.rxc.lang.collection.$$.$$;
+import static com.rxc.lang.collection.$$.$0;
 import static com.rxc.lang.Minutes.$;
-import static com.rxc.meta.CommonDataDictionary.*;
 
 /**
  * Created by richard.colvin on 01/12/2015.

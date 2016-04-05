@@ -2,7 +2,7 @@ package com.rxc.doa_es_impl;
 
 import com.rxc.dao.Dao;
 import com.rxc.dao.QueryData;
-import com.rxc.lang.T2;
+import com.rxc.lang.tuple.T2;
 
 import java.util.Collection;
 import java.util.function.Function;

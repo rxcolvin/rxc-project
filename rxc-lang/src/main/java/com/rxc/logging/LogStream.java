@@ -1,8 +1,5 @@
 package com.rxc.logging;
 
-import com.rxc.lang.F0;
-import com.rxc.lang.F1;
-
 import java.util.function.Supplier;
 
 /**

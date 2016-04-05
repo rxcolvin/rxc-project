@@ -1,7 +1,5 @@
 package com.rxc.logging;
 
-import com.rxc.lang.F0;
-
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.function.Supplier;

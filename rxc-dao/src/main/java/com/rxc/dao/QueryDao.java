@@ -1,7 +1,7 @@
 package com.rxc.dao;
 
 
-import com.rxc.lang.T2;
+import com.rxc.lang.tuple.T2;
 
 import java.util.Collection;
 

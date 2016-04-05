@@ -1,6 +1,6 @@
 package com.rxc.ui;
 
-import com.rxc.lang.F0V;
+import com.rxc.lang.functional.F0V;
 
 /**
  * Created by richard.colvin on 13/11/2015.

@@ -1,13 +1,13 @@
 package com.rxc.uimock;
 
-import com.rxc.lang.$$;
-import com.rxc.lang.$_;
+import com.rxc.lang.collection.$$;
+import com.rxc.lang.collection.$_;
 import com.rxc.ui.UIAction;
 import com.rxc.ui.UIComponent;
 import com.rxc.ui.UIContainer;
 import com.rxc.ui.UIEditField;
 
-import static com.rxc.lang.$_.$_;
+import static com.rxc.lang.collection.$_.$_;
 
 /**
  * Created by richard.colvin on 02/12/2015.

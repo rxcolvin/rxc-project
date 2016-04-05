@@ -1,5 +1,7 @@
 package com.rxc.lang;
 
+import com.rxc.lang.functional.F1;
+
 /**
  * Created by richard.colvin on 03/12/2015.
  */

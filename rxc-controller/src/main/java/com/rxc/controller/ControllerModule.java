@@ -1,9 +1,9 @@
 package com.rxc.controller;
 
-import com.rxc.lang.$_;
+import com.rxc.lang.collection.$_;
 import com.rxc.lang.Conversions;
 
-import static com.rxc.lang.$$.$$;
+import static com.rxc.lang.collection.$$.$$;
 
 
 public class ControllerModule {

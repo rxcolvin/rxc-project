@@ -1,12 +1,10 @@
 package com.rxc.ui.tvm;
 
-import com.rxc.lang.F1;
-import com.rxc.lang.T3;
-import com.rxc.ui.UIComponent;
+import com.rxc.lang.functional.F1;
+import com.rxc.lang.tuple.T3;
 import com.rxc.ui.UIEditField;
 
 import org.teavm.jso.dom.events.Event;
-import org.teavm.jso.dom.html.HTMLDocument;
 import org.teavm.jso.dom.html.HTMLInputElement;
 
 /**

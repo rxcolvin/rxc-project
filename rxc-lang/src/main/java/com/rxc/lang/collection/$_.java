@@ -1,4 +1,7 @@
-package com.rxc.lang;
+package com.rxc.lang.collection;
+
+import com.rxc.lang.functional.F1;
+import com.rxc.lang.tuple.T2;
 
 import java.util.HashMap;
 
@@ -60,4 +63,5 @@ public class $_<K, T> {
     public static <K, T, X> $_<K, T> $_($$<X> ts, F1<K, X> f1, F1<T, X> f2, F1<T, K> whenNotFound) {
         return new $_<K, T>(ts, f1, f2, whenNotFound);
     }
+
 }

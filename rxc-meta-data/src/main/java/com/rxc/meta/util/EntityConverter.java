@@ -1,6 +1,6 @@
 package com.rxc.meta.util;
 
-import com.rxc.lang.F1C;
+import com.rxc.lang.functional.F1C;
 import com.rxc.meta.EntityMeta;
 import com.rxc.meta.FieldMeta;
 

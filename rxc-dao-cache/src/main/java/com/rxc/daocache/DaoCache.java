@@ -5,13 +5,17 @@ import com.rxc.dao.NotFoundException;
 import com.rxc.dao.QueryData;
 import com.rxc.dao.RxDao;
 import com.rxc.lang.*;
+import com.rxc.lang.collection.$$;
+import com.rxc.lang.collection.$_;
+import com.rxc.lang.functional.F1;
+import com.rxc.lang.tuple.T2;
 import rx.Observable;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.rxc.lang.$_.*;
-import static com.rxc.lang.Tuple.*;
+import static com.rxc.lang.collection.$_.*;
+import static com.rxc.lang.tuple.Tuple.*;
 
 public class DaoCache<K, T, C> implements RxDao<K, T, C> {
 
