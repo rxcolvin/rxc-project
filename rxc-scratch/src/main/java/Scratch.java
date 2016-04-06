@@ -239,12 +239,12 @@ public class Scratch {
     }
 
 
-    public static class PFServiceFactory<DTO, E>  {
+  public static class PFServiceFactory<DTO, E, ID> {
 
 
         public  final PFService<DTO> pfService;
 
-      public PFServiceFactory(Dao<DTO, E, ?> pfDoa) {
+    public PFServiceFactory(Dao<DTO, E, ID> pfDoa) {
         pfService = new PFService<>(pfDoa.)
 
         }
