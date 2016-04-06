@@ -66,6 +66,7 @@ public class Scratch {
         PF_CREATE,
         PF_HEALTHCHECK,
         PF_NODE_HEALTH,
+      PF_GETDOC,
         UNKNOWN
     }
 
@@ -243,8 +244,8 @@ public class Scratch {
 
         public  final PFService<DTO> pfService;
 
-        public PFServiceFactory() {
-            pfService = new PFService<>()
+      public PFServiceFactory(Dao<DTO, E, ?> pfDoa) {
+        pfService = new PFService<>(pfDoa.)
 
         }
 
@@ -275,24 +276,15 @@ public class Scratch {
 
     }
 
-    //
-    public static class ID {
-
-    }
 
     public static class UUID {
 
     }
 
-    public static class PFDao {
-        public static class UserCtx {
-
-        }
-    }
 
     //+ Dao Layer
     //CommonDoa
-    public static class Dao<E, U> {
+    public static class Dao<E, U, ID> {
 
         public static class Params<U, P> {
             public final U userCtx;
@@ -308,7 +300,9 @@ public class Scratch {
 
         public final Function<Params<U, ID>, E> getById;
 
-        public Dao(Function<Params<U, ID>, E> getById) {
+      public Dao(
+          final Function<Params<U, ID>, E> getById
+      ) {
             this.getById = getById;
         }
 
@@ -316,7 +310,7 @@ public class Scratch {
 
 
     //+ MockDao
-    public static class MockDaoGetByIdReq<E, U, ID> implements Function<Dao.Params<ID, U>, E> {
+    public static class MockDaoGetByIdReq<E, U, ID> implements Function<Dao.Params<U, ID>, E> {
         private final Supplier<E> factory;
 
         public MockDaoGetByIdReq(Supplier<E> factory) {
@@ -324,21 +318,32 @@ public class Scratch {
         }
 
         @Override
-        public E apply(Dao.Params<ID, U> p) {
+        public E apply(Dao.Params<U, ID> p) {
             return factory.get();
         }
     }
 
-    public static class MockDaoFactory<E, U> {
-       public final Dao<E, U>  dao;
+  public static class MockDaoFactory<E, U, ID> {
+    public final Dao<E, U, ID>                  dao;
+    public final Function<Dao.Params<U, ID>, E> getByIdReq;
 
-        //here
+    public MockDaoFactory(Supplier<E> entityFactory) {
+      getByIdReq = new MockDaoGetByIdReq<>(entityFactory);
+
+      dao = new Dao<>(getByIdReq);
+    }
+
+    //here
     }
 
 
+  // PF
 
+  public static class UserCtx {
 
-    //FooDao
+  }
+
+  //Foo
 
     public static class Foo {
 
@@ -349,6 +354,8 @@ public class Scratch {
     }
 
     //ES FoaDaoFactory
+
+  public static FooMockDaoFactory fooMockDaoFactory = new MockDaoFactory<Foo, UserCtx, UUID>()
 
 
     public static class FooDaoESFactory implements Supplier<Dao<Foo, PFDao.UserCtx>> {
@@ -383,8 +390,8 @@ public class Scratch {
                 null
         );
 
-
-
+      MockDaoFactory<>
+      PFService<FooDto> fooGetService = new PFServiceFactory<FooDto, Foo>()
 
         final CaseFunction<HttpRequest, HttpResponse, ReqKey> caseFunction = new CaseFunction<>(
                 "dispatcher",
