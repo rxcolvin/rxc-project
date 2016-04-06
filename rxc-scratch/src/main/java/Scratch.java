@@ -16,11 +16,11 @@ import static com.rxc.lang.tuple.Tuple.*;
  */
 public class Scratch {
 
+    // HttpEngine Layer
 
-    // com.rxc.lang.functional.CaseFunction
-
+    // Http Layer
     public enum HttpAction {
-        GET, PUT, DELETE
+        GET, PUT, DELETE, HEADER
     }
 
     public enum HttpProtocol {
@@ -69,6 +69,10 @@ public class Scratch {
         UNKNOWN
     }
 
+    /**
+     * All requests should be resovable to a type (class) and an asset (instance), although some requests
+     * will have no asset type because it doesn;t exist (_health/node) or is implied (LOAD_FILE - assetType = "file")
+     */
     public static class ReqKey {
         public final ReqType reqType;
         public final String assetType;
@@ -102,10 +106,15 @@ public class Scratch {
     }
 
 
+    //PFRest
 
+    public static class PFHttpReq {
+        public UUID uuid;
+    }
 
-    //Rest Layer
+    public static class PFHttpResp {
 
+    }
 
     public static class PFServiceReqWrapper<Req, Resp, In, Out, Ctx> implements Function<Req, Resp> {
 
@@ -115,14 +124,14 @@ public class Scratch {
         private final BiFunction<Ctx, In, Out> service;
 
         public PFServiceReqWrapper(
-                final Function<Req, In> xin,
-                final Function<Out, Resp> xout,
-                final Function<Req, Ctx> xCtx,
+                final Function<Req, In> reqToIn,
+                final Function<Out, Resp> outToResp,
+                final Function<Req, Ctx> reqToCtx,
                 final BiFunction<Ctx, In, Out> service
         ) {
-            this.xin = xin;
-            this.xout = xout;
-            this.xCtx = xCtx;
+            this.xin = reqToIn;
+            this.xout = outToResp;
+            this.xCtx = reqToCtx;
             this.service = service;
         }
 
@@ -138,16 +147,16 @@ public class Scratch {
 
 
     public static class PFRestlet {
-        public final Function<HttpRequest, HttpResponse> getByIdReq;
-        public final Function<HttpRequest, HttpResponse> putReq;
-        public final Function<HttpRequest, HttpResponse> deleteReq;
-        public final Function<HttpRequest, HttpResponse> queryReq;
+        public final Function<PFHttpReq, PFHttpResp> getByIdReq;
+        public final Function<PFHttpReq, PFHttpResp> putReq;
+        public final Function<PFHttpReq, PFHttpResp> deleteReq;
+        public final Function<PFHttpReq, PFHttpResp> queryReq;
 
         public PFRestlet(
-                final Function<HttpRequest, HttpResponse> getByIdReq,
-                final Function<HttpRequest, HttpResponse> putReq,
-                final Function<HttpRequest, HttpResponse> deleteReq,
-                final Function<HttpRequest, HttpResponse> queryReq
+                final Function<PFHttpReq, PFHttpResp> getByIdReq,
+                final Function<PFHttpReq, PFHttpResp> putReq,
+                final Function<PFHttpReq, PFHttpResp> deleteReq,
+                final Function<PFHttpReq, PFHttpResp> queryReq
         ) {
             this.getByIdReq = getByIdReq;
             this.putReq = putReq;
@@ -156,19 +165,87 @@ public class Scratch {
         }
     }
 
+    public static Function<HttpRequest, PFHttpReq> httpReqTpFHttpReq =
+            r -> new PFHttpReq(
+            );
+
+    public static Function<PFHttpResp, HttpResponse> pfHttpRespToHttpResponse =
+            r -> new HttpResponse();
+
+    public static Function<PFHttpReq, PFContext> pfHttpReqToPFContext =
+            r -> new PFContext();
+
+
+    public static class PFRestGetReq<DTO>
+            implements Function<PFHttpReq, PFHttpResp> {
+
+
+        private final PFServiceReqWrapper<PFHttpReq, PFHttpResp, UUID, DTO, PFContext> getReq;
+
+        public PFRestGetReq(
+                final Function<DTO, PFHttpResp> dtoToPFResp,
+                final Function<PFHttpReq, PFContext> pfHttpReqToPFContext,
+                final BiFunction<PFContext, UUID, DTO> getService
+        ) {
+
+            getReq = new PFServiceReqWrapper<>(
+                    r -> r.uuid,
+                    dtoToPFResp,
+                    pfHttpReqToPFContext,
+                    getService
+
+            );
+        }
+
+        @Override
+        public PFHttpResp apply(PFHttpReq httpRequest) {
+            return getReq.apply(httpRequest);
+        }
+    }
+
+
+    public static class PFRestletFactory<DTO> {
+
+        public final PFRestlet pfRestlet;
+
+        public PFRestletFactory(
+                final Function<DTO, PFHttpResp> dtoToPFResp,
+                final PFService<DTO> service
+        ) {
+            final PFRestGetReq<DTO> pfGet = new PFRestGetReq<>(
+                    dtoToPFResp,
+                    pfHttpReqToPFContext,
+                    service.getById
+            );
+            pfRestlet = new PFRestlet(
+                    pfGet,
+                    null,
+                    null,
+                    null
+
+            );
+        }
+    }
+
+
+    //Other Rest/File/Blah Layers ??
+
+
+
     //Service Layer
 
     public static class FooDto {
     }
 
 
-    public static class PFServiceFactory<DTO, E> implements Supplier<PFService<DTO>> {
+    public static class PFServiceFactory<DTO, E>  {
 
 
-        private final PFService<DTO> fooService;
+        public  final PFService<DTO> pfService;
 
         public PFServiceFactory() {
-            fooService = new PFService<>(it -> new FooDto(), update);
+            pfService = new PFService<>()
+
         }
 
         @Override
@@ -177,19 +254,16 @@ public class Scratch {
         }
 
 
-
     }
 
-    public static class PFService<DTO_TYPE> {
+    public static class PFService<DTO> {
+       public final BiFunction<PFContext, UUID, DTO> getById;
 
-
-        public final Function<UUID, DTO_TYPE> getById;
-
-        public final BiConsumer<UUID, DTO_TYPE> update;
+        public final BiConsumer<PFContext, DTO> update;
 
         public PFService(
-                final Function<UUID, DTO_TYPE> getById,
-                final BiConsumer<UUID, DTO_TYPE> update
+                final BiFunction<PFContext, UUID, DTO> getById,
+                final BiConsumer<PFContext, DTO> update
         ) {
             this.getById = getById;
             this.update = update;
@@ -216,8 +290,9 @@ public class Scratch {
         }
     }
 
+    //+ Dao Layer
     //CommonDoa
-    public static class SimpleDao<DAO_TYPE, CTX> {
+    public static class Dao<E, U> {
 
         public static class Params<U, P> {
             public final U userCtx;
@@ -231,13 +306,36 @@ public class Scratch {
         }
 
 
-        public final Function<Params<CTX, ID>, DAO_TYPE> getById;
+        public final Function<Params<U, ID>, E> getById;
 
-        public SimpleDao(Function<Params<CTX, ID>, DAO_TYPE> getById) {
+        public Dao(Function<Params<U, ID>, E> getById) {
             this.getById = getById;
         }
 
     }
+
+
+    //+ MockDao
+    public static class MockDaoGetByIdReq<E, U, ID> implements Function<Dao.Params<ID, U>, E> {
+        private final Supplier<E> factory;
+
+        public MockDaoGetByIdReq(Supplier<E> factory) {
+            this.factory = factory;
+        }
+
+        @Override
+        public E apply(Dao.Params<ID, U> p) {
+            return factory.get();
+        }
+    }
+
+    public static class MockDaoFactory<E, U> {
+       public final Dao<E, U>  dao;
+
+        //here
+    }
+
+
 
 
     //FooDao
@@ -253,15 +351,15 @@ public class Scratch {
     //ES FoaDaoFactory
 
 
-    public static class FooDaoESFactory implements Supplier<SimpleDao<Foo, PFDao.UserCtx>> {
+    public static class FooDaoESFactory implements Supplier<Dao<Foo, PFDao.UserCtx>> {
 
 
-        private final SimpleDao<Foo, PFDao.UserCtx> fooDao = new SimpleDao<>(it -> new Foo());
+        private final Dao<Foo, PFDao.UserCtx> fooDao = new Dao<>(it -> new Foo());
 
 
         @Override
 
-        public SimpleDao<Foo, PFDao.UserCtx> get() {
+        public Dao<Foo, PFDao.UserCtx> get() {
             return fooDao;
         }
     }
@@ -270,7 +368,7 @@ public class Scratch {
 
     static Function<HttpRequest, UUID> xin;
 
-    static Function<FooDto,HttpResponse> xout;
+    static Function<FooDto, HttpResponse> xout;
     static Function<HttpRequest, PFContext> xCtx;
 
 
@@ -285,7 +383,8 @@ public class Scratch {
                 null
         );
 
-        final
+
+
 
         final CaseFunction<HttpRequest, HttpResponse, ReqKey> caseFunction = new CaseFunction<>(
                 "dispatcher",
@@ -302,7 +401,6 @@ public class Scratch {
                 ),
                 keyFunc
         );
-
 
 
     }
