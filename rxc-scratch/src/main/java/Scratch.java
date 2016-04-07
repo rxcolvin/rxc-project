@@ -66,7 +66,7 @@ public class Scratch {
         PF_CREATE,
         PF_HEALTHCHECK,
         PF_NODE_HEALTH,
-      PF_GETDOC,
+        PF_GETDOC,
         UNKNOWN
     }
 
@@ -107,57 +107,20 @@ public class Scratch {
     }
 
 
-    //PFRest
-
-    public static class PFHttpReq {
-        public UUID uuid;
-    }
-
-    public static class PFHttpResp {
-
-    }
-
-    public static class PFServiceReqWrapper<Req, Resp, In, Out, Ctx> implements Function<Req, Resp> {
-
-        private final Function<Req, In> xin;
-        private final Function<Out, Resp> xout;
-        private final Function<Req, Ctx> xCtx;
-        private final BiFunction<Ctx, In, Out> service;
-
-        public PFServiceReqWrapper(
-                final Function<Req, In> reqToIn,
-                final Function<Out, Resp> outToResp,
-                final Function<Req, Ctx> reqToCtx,
-                final BiFunction<Ctx, In, Out> service
-        ) {
-            this.xin = reqToIn;
-            this.xout = outToResp;
-            this.xCtx = reqToCtx;
-            this.service = service;
-        }
 
 
-        @Override
-        public Resp apply(Req req) {
-            final Ctx ctx = xCtx.apply(req); //Could throw Exception
-            final In in = xin.apply(req); //Could throw an exception
-            final Out out = service.apply(ctx, in);
-            return xout.apply(out);
-        }
-    }
 
+    public static class RestDataService<Req, Resp> {
+        public final Function<Req, Resp> getByIdReq;
+        public final Function<Req, Resp> putReq;
+        public final Function<Req, Resp> deleteReq;
+        public final Function<Req, Resp> queryReq;
 
-    public static class PFRestlet {
-        public final Function<PFHttpReq, PFHttpResp> getByIdReq;
-        public final Function<PFHttpReq, PFHttpResp> putReq;
-        public final Function<PFHttpReq, PFHttpResp> deleteReq;
-        public final Function<PFHttpReq, PFHttpResp> queryReq;
-
-        public PFRestlet(
-                final Function<PFHttpReq, PFHttpResp> getByIdReq,
-                final Function<PFHttpReq, PFHttpResp> putReq,
-                final Function<PFHttpReq, PFHttpResp> deleteReq,
-                final Function<PFHttpReq, PFHttpResp> queryReq
+        public RestDataService(
+                final Function<Req, Resp> getByIdReq,
+                final Function<Req, Resp> putReq,
+                final Function<Req, Resp> deleteReq,
+                final Function<Req, Resp> queryReq
         ) {
             this.getByIdReq = getByIdReq;
             this.putReq = putReq;
@@ -165,6 +128,7 @@ public class Scratch {
             this.queryReq = queryReq;
         }
     }
+
 
     public static Function<HttpRequest, PFHttpReq> httpReqTpFHttpReq =
             r -> new PFHttpReq(
@@ -177,7 +141,7 @@ public class Scratch {
             r -> new PFContext();
 
 
-    public static class PFRestGetReq<DTO>
+    public static class PFRestGetReq<CTX, ID, DTO>
             implements Function<PFHttpReq, PFHttpResp> {
 
 
@@ -205,72 +169,127 @@ public class Scratch {
     }
 
 
-    public static class PFRestletFactory<DTO> {
 
-        public final PFRestlet pfRestlet;
-
-        public PFRestletFactory(
-                final Function<DTO, PFHttpResp> dtoToPFResp,
-                final PFService<DTO> service
-        ) {
-            final PFRestGetReq<DTO> pfGet = new PFRestGetReq<>(
-                    dtoToPFResp,
-                    pfHttpReqToPFContext,
-                    service.getById
-            );
-            pfRestlet = new PFRestlet(
-                    pfGet,
-                    null,
-                    null,
-                    null
-
-            );
-        }
-    }
 
 
     //Other Rest/File/Blah Layers ??
 
 
-
     //Service Layer
 
-    public static class FooDto {
-    }
 
+    public static class DataService<CTX, ID, DTO> {
+        public final BiFunction<CTX, ID, DTO> getById;
 
-  public static class PFServiceFactory<DTO, E, ID> {
+        public final BiConsumer<CTX, DTO> update;
 
-
-        public  final PFService<DTO> pfService;
-
-    public PFServiceFactory(Dao<DTO, E, ID> pfDoa) {
-        pfService = new PFService<>(pfDoa.)
-
-        }
-
-        @Override
-        public PFService<DTO> get() {
-            return fooService;
-        }
-
-
-    }
-
-    public static class PFService<DTO> {
-       public final BiFunction<PFContext, UUID, DTO> getById;
-
-        public final BiConsumer<PFContext, DTO> update;
-
-        public PFService(
-                final BiFunction<PFContext, UUID, DTO> getById,
-                final BiConsumer<PFContext, DTO> update
+        public DataService(
+                final BiFunction<CTX, ID, DTO> getById,
+                final BiConsumer<CTX, DTO> update
         ) {
             this.getById = getById;
             this.update = update;
         }
     }
 
+
+    /**
+     * Creates a production DataService instance that calls a dao.
+     *
+     * @param <CTX>  servivce context type
+     * @param <DTO>  service data transfer object type
+     * @param <ID>   id type
+     * @param <UCTX> dao user context
+     * @param <E>    dao entity type
+     */
+    public static class DataServiceFactory<CTX, DTO, ID, UCTX, E> {
+
+
+        public final DataService<CTX, ID, DTO> pfService;
+
+        public DataServiceFactory(
+                final Dao<E, UCTX, ID> dao,
+                final Function<E, DTO> entityToDto,
+                final Function<CTX, UCTX> ctxToUctx
+        ) {
+            final BiFunction<CTX, ID, DTO> getById
+                    = (ctx, id) -> entityToDto.apply(dao.getById.apply(ctxToUctx.apply(ctx), id));
+
+            pfService = new DataService<>(
+                    getById,
+                    null
+            );
+
+        }
+
+
+    }
+
+
+    //+ Dao Layer
+    //CommonDoa
+    public static class Dao<E, UCTX, ID> {
+
+
+        public final BiFunction<UCTX, ID, E> getById;
+
+        public Dao(
+                final BiFunction<UCTX, ID, E> getById
+        ) {
+            this.getById = getById;
+        }
+
+    }
+
+
+    //+ MockDao
+
+
+    //TODO: replace with in-memory cache etc
+    public static class MockDaoFactory<E, UCTX, ID> {
+        public final Dao<E, UCTX, ID> dao;
+
+        public MockDaoFactory(
+                final Supplier<E> entityFactory
+        ) {
+            dao = new Dao<>((u, id) -> entityFactory.get());
+        }
+
+        //here
+    }
+
+    public static class MockDaoFactoryFunction<E, UCTX, ID> implements Function<Supplier<E>, Dao<E, UCTX, ID>> {
+        @Override
+        public Dao<E, UCTX, ID> apply(Supplier<E> entityFactory) {
+            return new Dao<>((u, id) -> entityFactory.get());
+        }
+    }
+
+    public static <E, UCTX, ID> Function<Supplier<E>, Dao<E, UCTX, ID>> mockDaoFactory() {
+        return new MockDaoFactoryFunction<>();
+    }
+
+    //PlaceHolder
+    public static class ESDaoFactory<E, U, ID> {
+
+    }
+
+    //PlaceHolder
+    public static class JdbcDaoFactory<E, U, ID> {
+
+    }
+
+
+    // General PF
+
+
+    public static class PFHttpReq {
+        public UUID uuid;
+    }
+
+    public static class PFHttpResp {
+
+    }
 
     public static class PFContext {
 
@@ -281,95 +300,72 @@ public class Scratch {
 
     }
 
-
-    //+ Dao Layer
-    //CommonDoa
-    public static class Dao<E, U, ID> {
-
-        public static class Params<U, P> {
-            public final U userCtx;
-            public final P params;
-
-
-            public Params(U userCtx, P params) {
-                this.userCtx = userCtx;
-                this.params = params;
-            }
-        }
-
-
-        public final Function<Params<U, ID>, E> getById;
-
-      public Dao(
-          final Function<Params<U, ID>, E> getById
-      ) {
-            this.getById = getById;
-        }
+    public static class UserCtx {
 
     }
 
 
-    //+ MockDao
-    public static class MockDaoGetByIdReq<E, U, ID> implements Function<Dao.Params<U, ID>, E> {
-        private final Supplier<E> factory;
+    public static class PFServiceReqWrapper<In, Out> implements Function<PFHttpReq, PFHttpResp> {
 
-        public MockDaoGetByIdReq(Supplier<E> factory) {
-            this.factory = factory;
+        private final Function<PFHttpReq, In> xin;
+        private final Function<Out, PFHttpResp> xout;
+        private final Function<PFHttpReq, PFContext> xCtx;
+        private final BiFunction<PFContext, In, Out> service;
+
+        public PFServiceReqWrapper(
+                final Function<PFHttpReq, In> reqToIn,
+                final Function<Out, PFHttpResp> outToResp,
+                final Function<PFHttpReq, PFContext> reqToCtx,
+                final BiFunction<PFContext, In, Out> service
+        ) {
+            this.xin = reqToIn;
+            this.xout = outToResp;
+            this.xCtx = reqToCtx;
+            this.service = service;
         }
+
 
         @Override
-        public E apply(Dao.Params<U, ID> p) {
-            return factory.get();
+        public PFHttpResp apply(PFHttpReq req) {
+            final PFContext ctx = xCtx.apply(req); //Could throw Exception
+            final In in = xin.apply(req); //Could throw an exception
+            final Out out = service.apply(ctx, in);
+            return xout.apply(out);
         }
     }
 
-  public static class MockDaoFactory<E, U, ID> {
-    public final Dao<E, U, ID>                  dao;
-    public final Function<Dao.Params<U, ID>, E> getByIdReq;
+    public static class PFRestDataServiceFactory<DTO> {
+        public final RestDataService<PFHttpReq, PFHttpResp> restDataService;
 
-    public MockDaoFactory(Supplier<E> entityFactory) {
-      getByIdReq = new MockDaoGetByIdReq<>(entityFactory);
-
-      dao = new Dao<>(getByIdReq);
+        public PFRestDataServiceFactory(
+                final DataService<PFContext, UUID, DTO> dataService,
+                final Function<DTO, PFHttpResp> dtoToPfHttpResp
+        ) {
+            restDataService = new RestDataService<>(
+                    new PFServiceReqWrapper<>(
+                            r -> r.uuid,
+                            dtoToPfHttpResp,
+                            pfHttpReqToPFContext,
+                            dataService.getById
+                    ),
+                    null,
+                    null,
+                    null
+            );
+        }
     }
 
-    //here
-    }
 
 
-  // PF
-
-  public static class UserCtx {
-
-  }
-
-  //Foo
+    //Foo
 
     public static class Foo {
 
     }
 
-    public static class FooMeta {
-
+    public static class FooDto {
     }
 
-    //ES FoaDaoFactory
-
-  public static FooMockDaoFactory fooMockDaoFactory = new MockDaoFactory<Foo, UserCtx, UUID>()
-
-
-    public static class FooDaoESFactory implements Supplier<Dao<Foo, PFDao.UserCtx>> {
-
-
-        private final Dao<Foo, PFDao.UserCtx> fooDao = new Dao<>(it -> new Foo());
-
-
-        @Override
-
-        public Dao<Foo, PFDao.UserCtx> get() {
-            return fooDao;
-        }
-    }
 
     static Function<HttpRequest, ReqKey> keyFunc = r -> new ReqKey(ReqType.PF_GET, "");
 
@@ -390,8 +386,25 @@ public class Scratch {
                 null
         );
 
-      MockDaoFactory<>
-      PFService<FooDto> fooGetService = new PFServiceFactory<FooDto, Foo>()
+        final MockDaoFactory<Foo, UserCtx, UUID> fooMockDaoFactory = new MockDaoFactory<>(Foo::new);
+
+        final DataServiceFactory<PFContext, FooDto, UUID, UserCtx, Foo> fooDataServiceFactory =
+                new DataServiceFactory<>(
+                        fooMockDaoFactory.dao,
+                        null,
+                        null
+                );
+
+
+        final Function<FooDto, PFHttpResp> dtoToPfHttpResp = null;
+
+        final PFRestDataServiceFactory<FooDto> fooDtoPFRestDataServiceFactory =
+                new PFRestDataServiceFactory<>(
+                        fooDataServiceFactory.pfService,
+                        dtoToPfHttpResp
+                        );
+
+
 
         final CaseFunction<HttpRequest, HttpResponse, ReqKey> caseFunction = new CaseFunction<>(
                 "dispatcher",
@@ -402,7 +415,7 @@ public class Scratch {
                                         xin,
                                         xout,
                                         xCtx,
-                                        fooGetService
+                                        fooDataServiceFactory.
                                 )
                         )
                 ),
