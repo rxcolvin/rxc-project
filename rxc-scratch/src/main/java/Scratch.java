@@ -1,10 +1,14 @@
+import com.rxc.lang.collection.$_;
 import com.rxc.lang.functional.CaseFunction;
+import com.rxc.lang.tuple.T2;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import com.rxc.lang.collection.$$;
 
 import static com.rxc.lang.collection.$$.$$;
 import static com.rxc.lang.tuple.Tuple.*;
@@ -58,118 +62,28 @@ public class Scratch {
 
     }
 
-    enum ReqType {
-        PF_GET,
-        PF_QUERY,
-        PF_DELETE,
-        PF_UPDATE,
-        PF_CREATE,
-        PF_HEALTHCHECK,
-        PF_NODE_HEALTH,
-        PF_GETDOC,
-        UNKNOWN
-    }
-
-    /**
-     * All requests should be resovable to a type (class) and an asset (instance), although some requests
-     * will have no asset type because it doesn;t exist (_health/node) or is implied (LOAD_FILE - assetType = "file")
-     */
-    public static class ReqKey {
-        public final ReqType reqType;
-        public final String assetType;
-
-        public ReqKey(
-                final ReqType reqType,
-                final String assetType
-        ) {
-            this.reqType = reqType;
-            this.assetType = assetType;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ReqKey reqKey = (ReqKey) o;
-
-            if (reqType != reqKey.reqType) return false;
-            return assetType != null ? assetType.equals(reqKey.assetType) : reqKey.assetType == null;
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = reqType != null ? reqType.hashCode() : 0;
-            result = 31 * result + (assetType != null ? assetType.hashCode() : 0);
-            return result;
-        }
-    }
-
-
-
-
 
     public static class RestDataService<Req, Resp> {
+        public final String assetType;
         public final Function<Req, Resp> getByIdReq;
         public final Function<Req, Resp> putReq;
         public final Function<Req, Resp> deleteReq;
         public final Function<Req, Resp> queryReq;
 
         public RestDataService(
+                final String assetType,
                 final Function<Req, Resp> getByIdReq,
                 final Function<Req, Resp> putReq,
                 final Function<Req, Resp> deleteReq,
                 final Function<Req, Resp> queryReq
         ) {
+            this.assetType = assetType;
             this.getByIdReq = getByIdReq;
             this.putReq = putReq;
             this.deleteReq = deleteReq;
             this.queryReq = queryReq;
         }
     }
-
-
-    public static Function<HttpRequest, PFHttpReq> httpReqTpFHttpReq =
-            r -> new PFHttpReq(
-            );
-
-    public static Function<PFHttpResp, HttpResponse> pfHttpRespToHttpResponse =
-            r -> new HttpResponse();
-
-    public static Function<PFHttpReq, PFContext> pfHttpReqToPFContext =
-            r -> new PFContext();
-
-
-    public static class PFRestGetReq<CTX, ID, DTO>
-            implements Function<PFHttpReq, PFHttpResp> {
-
-
-        private final PFServiceReqWrapper<PFHttpReq, PFHttpResp, UUID, DTO, PFContext> getReq;
-
-        public PFRestGetReq(
-                final Function<DTO, PFHttpResp> dtoToPFResp,
-                final Function<PFHttpReq, PFContext> pfHttpReqToPFContext,
-                final BiFunction<PFContext, UUID, DTO> getService
-        ) {
-
-            getReq = new PFServiceReqWrapper<>(
-                    r -> r.uuid,
-                    dtoToPFResp,
-                    pfHttpReqToPFContext,
-                    getService
-
-            );
-        }
-
-        @Override
-        public PFHttpResp apply(PFHttpReq httpRequest) {
-            return getReq.apply(httpRequest);
-        }
-    }
-
-
-
 
 
     //Other Rest/File/Blah Layers ??
@@ -281,14 +195,73 @@ public class Scratch {
 
 
     // General PF
+    enum PFReqType {
+        PF_GET,
+        PF_QUERY,
+        PF_DELETE,
+        PF_UPDATE,
+        PF_CREATE,
+        PF_HEALTHCHECK,
+        PF_NODE_HEALTH,
+        PF_GETDOC,
+        UNKNOWN
+    }
+
+    enum PFCOntentType {
+        JSON,
+        XML,
+        TEXT
+    }
+
+    /**
+     * All requests should be resovable to a type (class) and an asset (instance), although some requests
+     * will have no asset type because it doesn;t exist (_health/node) or is implied (LOAD_FILE - assetType = "file")
+     */
+    public static class PFReqKey {
+        public final PFReqType PFReqType;
+        public final String assetType;
+
+        public PFReqKey(
+                final PFReqType reqType,
+                final String assetType
+        ) {
+            this.PFReqType = reqType;
+            this.assetType = assetType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PFReqKey reqKey = (PFReqKey) o;
+
+            if (PFReqType != reqKey.PFReqType) return false;
+            return assetType != null ? assetType.equals(reqKey.assetType) : reqKey.assetType == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = PFReqType != null ? PFReqType.hashCode() : 0;
+            result = 31 * result + (assetType != null ? assetType.hashCode() : 0);
+            return result;
+        }
+    }
 
 
     public static class PFHttpReq {
         public UUID uuid;
+        public PFReqType pfReqType;
+        public String[] path;
+        public $_<String, $$<Object>> parameters;
+        public HttpProtocol httpProtocol;
+        public String body;
+        public String someHeader;
     }
 
     public static class PFHttpResp {
-
+        public String body;
     }
 
     public static class PFContext {
@@ -297,22 +270,36 @@ public class Scratch {
 
 
     public static class UUID {
+        public final byte[] value;
 
+        public UUID(byte[] value) {
+            this.value = value;
+        }
     }
 
     public static class UserCtx {
 
     }
 
+    public static Function<HttpRequest, PFHttpReq> httpReqTpFHttpReq =
+            r -> new PFHttpReq(
+            );
 
-    public static class PFServiceReqWrapper<In, Out> implements Function<PFHttpReq, PFHttpResp> {
+    public static Function<PFHttpResp, HttpResponse> pfHttpRespToHttpResponse =
+            r -> new HttpResponse();
+
+    public static Function<PFHttpReq, PFContext> pfHttpReqToPFContext =
+            r -> new PFContext();
+
+
+    public static class PFRestDataServiceReqWrapper<In, Out> implements Function<PFHttpReq, PFHttpResp> {
 
         private final Function<PFHttpReq, In> xin;
         private final Function<Out, PFHttpResp> xout;
         private final Function<PFHttpReq, PFContext> xCtx;
         private final BiFunction<PFContext, In, Out> service;
 
-        public PFServiceReqWrapper(
+        public PFRestDataServiceReqWrapper(
                 final Function<PFHttpReq, In> reqToIn,
                 final Function<Out, PFHttpResp> outToResp,
                 final Function<PFHttpReq, PFContext> reqToCtx,
@@ -326,7 +313,9 @@ public class Scratch {
 
 
         @Override
-        public PFHttpResp apply(PFHttpReq req) {
+        public PFHttpResp apply(
+                final PFHttpReq req
+        ) {
             final PFContext ctx = xCtx.apply(req); //Could throw Exception
             final In in = xin.apply(req); //Could throw an exception
             final Out out = service.apply(ctx, in);
@@ -338,11 +327,13 @@ public class Scratch {
         public final RestDataService<PFHttpReq, PFHttpResp> restDataService;
 
         public PFRestDataServiceFactory(
+                final String assetType,
                 final DataService<PFContext, UUID, DTO> dataService,
                 final Function<DTO, PFHttpResp> dtoToPfHttpResp
         ) {
             restDataService = new RestDataService<>(
-                    new PFServiceReqWrapper<>(
+                    assetType,
+                    new PFRestDataServiceReqWrapper<>(
                             r -> r.uuid,
                             dtoToPfHttpResp,
                             pfHttpReqToPFContext,
@@ -356,7 +347,6 @@ public class Scratch {
     }
 
 
-
     //Foo
 
     public static class Foo {
@@ -364,28 +354,15 @@ public class Scratch {
     }
 
     public static class FooDto {
+
     }
-
-
-    static Function<HttpRequest, ReqKey> keyFunc = r -> new ReqKey(ReqType.PF_GET, "");
-
-    static Function<HttpRequest, UUID> xin;
-
-    static Function<FooDto, HttpResponse> xout;
-    static Function<HttpRequest, PFContext> xCtx;
 
 
     public static void main(String[] args) {
         //TODO: create a test harness
 
-        final HttpRequest httpRequest = new HttpRequest(
-                HttpAction.GET,
-                HttpProtocol.HTTP,
-                "/foo/adadsad/asdsadsad".split("/"),
-                null,
-                null
-        );
 
+        //Foo
         final MockDaoFactory<Foo, UserCtx, UUID> fooMockDaoFactory = new MockDaoFactory<>(Foo::new);
 
         final DataServiceFactory<PFContext, FooDto, UUID, UserCtx, Foo> fooDataServiceFactory =
@@ -400,27 +377,50 @@ public class Scratch {
 
         final PFRestDataServiceFactory<FooDto> fooDtoPFRestDataServiceFactory =
                 new PFRestDataServiceFactory<>(
+                        "foo",
                         fooDataServiceFactory.pfService,
                         dtoToPfHttpResp
-                        );
+                );
 
 
+        final Function<RestDataService<PFHttpReq, PFHttpResp>, $$<T2<PFReqKey, Function<PFHttpReq, PFHttpResp>>>> ff =
+                service -> $$(
+                        $(new PFReqKey(
+                                        PFReqType.PF_GET, service.assetType),
+                                service.getByIdReq
+                        )
+                );
 
-        final CaseFunction<HttpRequest, HttpResponse, ReqKey> caseFunction = new CaseFunction<>(
+        final $$<T2<PFReqKey, Function<PFHttpReq, PFHttpResp>>> fooDispatch = ff.apply(fooDtoPFRestDataServiceFactory.restDataService);
+
+        //Bar - TODO
+        final $$<T2<PFReqKey, Function<PFHttpReq, PFHttpResp>>> barDispatch = $$.$0();
+
+        //Dispatcher
+        final CaseFunction<PFHttpReq, PFHttpResp, PFReqKey> dispatcher = new CaseFunction<>(
                 "dispatcher",
                 $$(
-                        $(
-                                new ReqKey(ReqType.PF_GET, "foo"),
-                                new PFServiceReqWrapper<>(
-                                        xin,
-                                        xout,
-                                        xCtx,
-                                        fooDataServiceFactory.
-                                )
-                        )
+                        fooDispatch,
+                        barDispatch
                 ),
-                keyFunc
+                req -> new PFReqKey(req.pfReqType, req.path.length > 0 ? req.path[0] : null)
         );
+
+
+        // Do some Stuff
+        final HttpRequest httpRequest = new HttpRequest(
+                HttpAction.GET,
+                HttpProtocol.HTTP,
+                "/foo/adadsad/asdsadsad".split("/"),
+                null,
+                null
+        );
+
+        final PFHttpReq pfHttpReq = httpReqTpFHttpReq.apply(httpRequest);
+
+        final PFHttpResp fpHttpResp = dispatcher.apply(pfHttpReq);
+
+        final HttpResponse httpResponse = pfHttpRespToHttpResponse.apply(fpHttpResp);
 
 
     }
